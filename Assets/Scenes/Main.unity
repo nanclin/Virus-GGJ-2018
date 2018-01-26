@@ -210,7 +210,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1521621538}
-  speed: 5
+  RotateSpeed: 5
+  WalkSpeed: 2
 --- !u!1 &394948830
 GameObject:
   m_ObjectHideFlags: 0
