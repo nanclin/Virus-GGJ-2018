@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Random = UnityEngine.Random;
 
 public class VirusCharacterController : MonoBehaviour {
 
     public Transform target;
     public float RotateSpeed;
     public float WalkSpeed;
+    public float AreaSize = 50;
 
     public List<Vector3> PathPoints = new List<Vector3>();
 
@@ -24,7 +26,8 @@ public class VirusCharacterController : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         if (FollowTarget) {
-            FollowingTarget(CurrentTargetPoint, OnTargetReached);
+//            FollowingTarget(CurrentTargetPoint, OnTargetReachedPathPoint);
+            FollowingTarget(CurrentTargetPoint, OnRandomTargetReached);
         }
     }
 
@@ -46,13 +49,18 @@ public class VirusCharacterController : MonoBehaviour {
         }
     }
 
-    private void OnTargetReached() {
+    private void OnTargetReachedPathPoint() {
 //        FollowTarget = false;
         CurrentPathPointIndex = (CurrentPathPointIndex + 1) % PathPoints.Count;
         CurrentTargetPoint = PathPoints[CurrentPathPointIndex];
     }
 
+    private void OnRandomTargetReached() {
+        CurrentTargetPoint = GetRandomPosition();
+    }
+
     private void OnDrawGizmosSelected() {
+        Gizmos.color = Color.white;
         for (int i = 0; i < PathPoints.Count; i++) {
             Vector3 point = PathPoints[i];
             Gizmos.DrawWireSphere(point, i == 0 ? 0.5f : 0.2f);
@@ -60,5 +68,17 @@ public class VirusCharacterController : MonoBehaviour {
                 Gizmos.DrawLine(PathPoints[i - 1], point);
             }
         }
+    }
+
+    private void OnDrawGizmos() {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(CurrentTargetPoint, 0.5f);
+    }
+
+    private Vector3 GetRandomPosition() {
+        float size = AreaSize * 0.5f;
+        float x = Random.Range(-size, size);
+        float z = Random.Range(-size, size);
+        return new Vector3(x, 0, z);
     }
 }
