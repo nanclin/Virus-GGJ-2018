@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 23d989b0a06508b4baf898f27f139e6b
-timeCreated: 1517055594
+guid: 1844c5f3f93737e4186461d206dd5a57
+timeCreated: 1517057065
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
@@ -52,10 +52,9 @@ ModelImporter:
     400042: Torso
     400044: upper_body
     2000000: front1
-    2300000: Basic_character
-    3300000: Basic_character
     4300000: Basic_character
     9500000: //RootNode
+    13700000: Basic_character
   externalObjects:
   - first:
       type: UnityEngine:Material
