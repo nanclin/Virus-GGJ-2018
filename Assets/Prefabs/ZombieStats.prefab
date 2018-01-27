@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1044627875343726}
+  m_IsPrefabParent: 1
+--- !u!1 &1044627875343726
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4219857352503826}
+  - component: {fileID: 114991528193349792}
+  m_Layer: 0
+  m_Name: ZombieStats
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4219857352503826
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1044627875343726}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 154.34999, y: 2.4581494, z: 10.159247}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114991528193349792
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1044627875343726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b082fa2889cf074092e05432880d8f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementSpeedArray:
+  - 1.5
+  - 1.7
+  - 2
+  - 2.3
+  - 2.5
+  - 3
+  - 3.5
+  - 4
+  - 4.5
+  - 5
+  damageArray: 0100000002000000030000000400000005000000060000000700000008000000090000000a000000
+  radiusArray: 030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
+  lifetimeArray: 05000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e000000
+  healthArray: 0a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000
+  upgradePriceArray: 0100000003000000060000000a0000000f000000150000001c000000240000002d00000037000000

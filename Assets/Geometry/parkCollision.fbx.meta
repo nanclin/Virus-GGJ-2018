@@ -1,27 +1,23 @@
 fileFormatVersion: 2
-guid: 5f18fa8529b055c4fb931f4ee6a1d0e9
-timeCreated: 1517011981
+guid: 437671032866a4942810fdf513c66c37
+timeCreated: 1517017613
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
     100000: //RootNode
     400000: //RootNode
+    2100000: lambert1
     2300000: //RootNode
     3300000: //RootNode
-    4300000: pSphere15
+    4300000: ParkCollision
     9500000: //RootNode
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: lambert1
-    second: {fileID: 2100000, guid: dde4e495b1e48ff4ca01bef44bb527f3, type: 2}
+  externalObjects: {}
   materials:
     importMaterials: 1
     materialName: 0
     materialSearch: 1
-    materialLocation: 0
+    materialLocation: 1
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -59,6 +55,8 @@ ModelImporter:
     optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
