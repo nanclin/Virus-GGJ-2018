@@ -38,7 +38,7 @@ public class ZombieStats : MonoBehaviour
 	public void UpgradeSkill(UpgradeType upgradeType)
 	{
 		upgradeLevelByUpgradeType[(int)upgradeType]++;
-		upgradeLevelByUpgradeType[(int)upgradeType] = Mathf.Min(upgradeLevelByUpgradeType[(int)upgradeType], 9);
+		upgradeLevelByUpgradeType[(int)upgradeType] = Mathf.Min(upgradeLevelByUpgradeType[(int)upgradeType], 5);
 	}
 
 	public int GetUpgradePrice(UpgradeType upgradeType)
@@ -78,14 +78,6 @@ public class ZombieStats : MonoBehaviour
 		}
 	}
 
-	public int Health
-	{
-		get
-		{
-			return healthArray[GetUpgradeLevel(UpgradeType.Health)];
-		}
-	}
-
 
 }
 
@@ -94,6 +86,5 @@ public enum UpgradeType
 	MovementSpeed,
 	Damage,
 	Radius,
-	Lifetime,
-	Health
+	Lifetime
 }

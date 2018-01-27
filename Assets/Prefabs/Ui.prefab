@@ -2180,6 +2180,7 @@ MonoBehaviour:
   skillPointsText: {fileID: 114900824949668938}
   mainUiGo: {fileID: 1317089933348474}
   postmatchGo: {fileID: 1180404190908618}
+  ReplayButton: {fileID: 0}
 --- !u!114 &114655799109131550
 MonoBehaviour:
   m_ObjectHideFlags: 1
