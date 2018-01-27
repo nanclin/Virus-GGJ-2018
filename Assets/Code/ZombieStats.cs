@@ -30,7 +30,7 @@ public class ZombieStats : MonoBehaviour
 		upgradeLevelByUpgradeType = new int[Enum.GetNames(typeof(UpgradeType)).Length];
 	}
 
-	private int GetUpgradeLevel(UpgradeType upgradeType)
+	public int GetUpgradeLevel(UpgradeType upgradeType)
 	{
 		return upgradeLevelByUpgradeType[(int)upgradeType];
 	}
