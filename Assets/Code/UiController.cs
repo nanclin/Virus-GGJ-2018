@@ -22,10 +22,10 @@ public class UiController : MonoBehaviour {
     private void Awake() {
         instance = this;
 
-        ReplayButton.onClick.AddListener(delegate {
+        /*ReplayButton.onClick.AddListener(delegate {
             OpenMainUi();
             GameManager.Instance.RestartGame();
-        });
+        });*/
     }
 
     public void SetScore(int score) {
