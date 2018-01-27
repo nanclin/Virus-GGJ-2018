@@ -7,7 +7,16 @@ using UnityEngine.AI;
 
 public class VirusCharacterController : MonoBehaviour {
 
-    private static List<VirusCharacterController> AllCharacters = new List<VirusCharacterController>();
+    enum WalkState {
+        None,
+        WalkNavMesh,
+        FollowMouse,
+        FollowCharacter,
+    }
+
+    public static List<VirusCharacterController> AllCharacters = new List<VirusCharacterController>();
+    private static Vector3 MousePosWorld;
+    private static int SpawnedCount = 0;
 
     public Transform target;
     public float RotateSpeed;
@@ -16,51 +25,174 @@ public class VirusCharacterController : MonoBehaviour {
 
     public List<Vector3> PathPoints = new List<Vector3>();
 
+    private WalkState CurrentState = WalkState.None;
     private bool FollowTarget;
-    private Vector3 CurrentTargetPoint;
-    private int CurrentPathPointIndex = 0;
+    private Vector3 TargetPosition;
     private int NavCornerIndex;
     private NavMeshPath NavMeshPath;
     private float elapsed = 0.0f;
+    private bool IsInRange;
+
 
     private bool NavFound = false;
     // Use this for initialization
     void Start() {
+//        if (AllCharacters == null) {
+//            AllCharacters = new List<VirusCharacterController>();
+//            SpawnedCount = 0;
+//        }
 //        CurrentTargetPoint = target.position;
         NavMeshPath = new NavMeshPath();
         AllCharacters.Add(this);
+        this.name = "char_" + SpawnedCount.ToString();
+        SpawnedCount++;
     }
 	
     // Update is called once per frame
     void Update() {
+
+        if (Input.GetMouseButtonDown(0)) {
+            EnterState(WalkState.FollowMouse);
+        }
+
+        if (Input.GetMouseButtonUp(0)) {
+            EnterState(WalkState.WalkNavMesh);
+        }
+
+        ExecuteCurrentState();
+    }
+
+    private void EnterState(WalkState newState) {
+
+        ExitCurrentState();
+
+        switch (newState) {
+            case WalkState.WalkNavMesh:
+                OnEnterStateWalkNavMesh();
+                break;
+            case WalkState.FollowMouse:
+                OnEnterStateFollowMouse();
+                break;
+            case WalkState.FollowCharacter:
+                OnEnterStateFollowCharacter();
+                break;
+        }
+
+        CurrentState = newState;
+    }
+
+    private void ExitCurrentState() {
+        switch (CurrentState) {
+            case WalkState.WalkNavMesh:
+                OnExitStateWalkNavMesh();
+                break;
+            case WalkState.FollowMouse:
+                OnExitStateFollowMouse();
+                break;
+            case WalkState.FollowCharacter:
+                OnExitStateFollowCharacter();
+                break;
+        }
+        CurrentState = WalkState.None;
+    }
+
+    private void ExecuteCurrentState() {
+        switch (CurrentState) {
+            case WalkState.WalkNavMesh:
+                OnExecuteStateNavMesh();
+                break;
+            case WalkState.FollowMouse:
+                OnExecuteStateFollowMouse();
+                break;
+            case WalkState.FollowCharacter:
+                OnExecuteStateFollowCharacter();
+                break;
+        }
+    }
+
+#region Enter State Methods
+
+    private void OnEnterStateWalkNavMesh() {
+        NavFound = false;
+        FindNavPath();
+    }
+
+    private void OnEnterStateFollowMouse() {
+        CurrentState = WalkState.FollowMouse;
+    }
+
+    private void OnEnterStateFollowCharacter() {
+
+    }
+
+#endregion
+
+#region Exit State Methods
+
+    private void OnExitStateWalkNavMesh() {
+        NavMeshPath.ClearCorners();
+    }
+
+    private void OnExitStateFollowMouse() {
+
+    }
+
+    private void OnExitStateFollowCharacter() {
+
+    }
+
+#endregion
+
+#region Execute State Methods
+
+    private void OnExecuteStateNavMesh() {
         if (FollowTarget) {
-//            FollowingTarget(CurrentTargetPoint, OnTargetReachedPathPoint);
-//            FollowingTarget(CurrentTargetPoint, OnRandomTargetReached);
-            FollowingTarget(CurrentTargetPoint, OnReachedNavCorner);
+            FollowingTarget(TargetPosition, OnReachedNavCorner);
         }
 
         elapsed += Time.deltaTime;
-        if (elapsed > 1.0f && NavFound == false) {
-            elapsed -= 1.0f;
+        float delay = 0.1f;
+        if (elapsed > delay && NavFound == false) {
+            elapsed -= delay;
             FollowTarget = true;
             NavFound = true;
             FindNavPath();
         }
     }
 
+    private void OnExecuteStateFollowMouse() {
+        Plane plane = new Plane(Vector3.up, 0);
+        Camera camera = GameManager.Instance.MainCamera;
+        float dist;
+        Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+        if (plane.Raycast(ray, out dist)) {
+            MousePosWorld = ray.GetPoint(dist);
+        }
+//        Debug.Log("ExecuteStateFollowMouse - pos: " + MousePosWorld);
+
+        TargetPosition = MousePosWorld;
+        FollowingTarget(TargetPosition, delegate {
+        });
+    }
+
+    private void OnExecuteStateFollowCharacter() {
+    }
+
+#endregion
+
     private void FollowingTarget(Vector3 targetPosition, Action onTargetReached) {
-        Vector3 targetDir = targetPosition - transform.position;
-        float rotateStep = RotateSpeed * Time.deltaTime;
+
+        Vector3 startDir = transform.forward;
+        Vector3 targetDir = Vector3.zero;
+        Vector3 avoidDir = Vector3.zero;
+        Vector3 wantedDir;// target dir + avoid dir
+
+        targetDir = targetPosition - transform.position;
         targetDir.y = 0;
-        Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, rotateStep, 0.0F);
+        targetDir.Normalize();
+        Debug.DrawRay(transform.position, targetDir * 3, Color.blue);
 
-        transform.rotation = Quaternion.LookRotation(newDir);
-
-        // walk forward
-        float walkStep = WalkSpeed * Time.deltaTime;
-        Vector3 walkVector = transform.forward;
-        Debug.DrawRay(transform.position, transform.forward, Color.blue);
-
+        IsInRange = false;
         // avoid other characters
         for (int i = 0; i < AllCharacters.Count; i++) {
             VirusCharacterController character = AllCharacters[i];
@@ -72,33 +204,51 @@ public class VirusCharacterController : MonoBehaviour {
             enemyDir.y = 0;
             float dist = enemyDir.magnitude;
 
+//            Debug.DrawLine(character.transform.position, transform.position, Color.white);
+
             // if in range of enemy
             if (dist < AvoidRadius) {
                 float avoidFactor01 = 1 - dist / AvoidRadius;
                 // adjust direction away from enemy
-                walkVector += -enemyDir.normalized * avoidFactor01;
-                walkVector.Normalize();
-                Debug.DrawRay(transform.position, -enemyDir.normalized * avoidFactor01, Color.red);
+                avoidDir += -enemyDir.normalized * avoidFactor01;
+                Debug.DrawRay(transform.position, -enemyDir.normalized * avoidFactor01 * 3, Color.red);
+                IsInRange = true;
             }
-            Debug.DrawRay(transform.position, walkVector, Color.green);
         }
 
-        Vector3 newPos = transform.position + walkVector * walkStep;
+        float rotateStep = RotateSpeed * Time.deltaTime;
+
+        wantedDir = targetDir + avoidDir;
+        wantedDir.Normalize();
+        Debug.DrawRay(transform.position, wantedDir, Color.yellow);
+
+        Vector3 newDir = Vector3.RotateTowards(startDir, wantedDir, rotateStep, 0.0F);
+        Debug.DrawRay(transform.position, newDir, Color.green);
+
+        transform.rotation = Quaternion.LookRotation(newDir);
+
+
+        // walk forward
+        float walkStep = WalkSpeed * Time.deltaTime;
+
+        Vector3 newPos = transform.position + newDir * walkStep;
         newPos.y = 0;
         transform.position = newPos;
-
-        // distance to target
+//
+        // is target reached?
         float distanceSquared = Vector3.SqrMagnitude(targetPosition - transform.position);
-//        Debug.Log(distanceSquared);
         if (distanceSquared < 2f) {
             onTargetReached();
         }
     }
 
+
     private void FindNavPath() {
+        Vector3 startPos = transform.position;
         for (int i = 0; i < 10; i++) { // try finding path
-            bool pathFound = NavMesh.CalculatePath(transform.position, GameManager.Instance.GetRandomArenaPosition(), NavMesh.AllAreas, NavMeshPath);
+            bool pathFound = NavMesh.CalculatePath(startPos, GameManager.Instance.GetRandomArenaPosition(), NavMesh.AllAreas, NavMeshPath);
             if (pathFound) break;
+            startPos += transform.forward;
         }
 
         if (NavMeshPath.corners.Length == 0) {
@@ -108,13 +258,7 @@ public class VirusCharacterController : MonoBehaviour {
         }
 
         NavCornerIndex = 0;
-        CurrentTargetPoint = NavMeshPath.corners[NavCornerIndex];
-    }
-
-    private void OnTargetReachedPathPoint() {
-//        FollowTarget = false;
-        CurrentPathPointIndex = (CurrentPathPointIndex + 1) % PathPoints.Count;
-        CurrentTargetPoint = PathPoints[CurrentPathPointIndex];
+        TargetPosition = NavMeshPath.corners[NavCornerIndex];
     }
 
     private void OnReachedNavCorner() {
@@ -122,30 +266,19 @@ public class VirusCharacterController : MonoBehaviour {
         if (NavCornerIndex >= NavMeshPath.corners.Length) {
             FindNavPath();
         } else {
-            CurrentTargetPoint = NavMeshPath.corners[NavCornerIndex];
+            TargetPosition = NavMeshPath.corners[NavCornerIndex];
         }
     }
 
     private void OnRandomTargetReached() {
-        CurrentTargetPoint = GameManager.Instance.GetRandomArenaPosition();
+        TargetPosition = GameManager.Instance.GetRandomArenaPosition();
     }
 
 #region Gizmos
 
-    private void OnDrawGizmosSelected() {
-        Gizmos.color = Color.white;
-        for (int i = 0; i < PathPoints.Count; i++) {
-            Vector3 point = PathPoints[i];
-            Gizmos.DrawWireSphere(point, i == 0 ? 0.5f : 0.2f);
-            if (i > 0) {
-                Gizmos.DrawLine(PathPoints[i - 1], point);
-            }
-        }
-    }
-
     private void OnDrawGizmos() {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(CurrentTargetPoint, 0.5f);
+        Gizmos.DrawWireSphere(TargetPosition, 0.5f);
 
         if (NavMeshPath == null) return;
 
@@ -158,8 +291,12 @@ public class VirusCharacterController : MonoBehaviour {
             }
         }
 
-        Gizmos.color = Color.gray;
+        // avoid radius
+        Gizmos.color = IsInRange ? Color.red : Color.gray;
         Gizmos.DrawWireSphere(transform.position, AvoidRadius);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(MousePosWorld, 1f);
     }
 
 #endregion

@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour {
 
     public VirusCharacterController CharacterPrefab;
     public float AreaSize = 50;
+    public Camera MainCamera;
+    public int SpawnCount = 3;
 
     public static GameManager Instance {
         get {
@@ -20,11 +22,31 @@ public class GameManager : MonoBehaviour {
     }
 
     void Start() {
-        SpawnCharacters(20);
+        SpawnCharacters(SpawnCount);
+    }
+
+    void Update() {
+        if (Input.GetKeyDown(KeyCode.R)) {
+            RestartGame();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha0)) {
+            Time.timeScale = 0;
+        } else if (Input.GetKeyDown(KeyCode.Alpha1)) {
+            Time.timeScale = 1;
+        } else if (Input.GetKeyDown(KeyCode.Alpha2)) {
+            Time.timeScale = 2;
+        } else if (Input.GetKeyDown(KeyCode.Alpha3)) {
+            Time.timeScale = 0.5f;
+        } else if (Input.GetKeyDown(KeyCode.Alpha4)) {
+            Time.timeScale = 0.1f;
+        } 
     }
 
     public void RestartGame() {
-        UiController.Instance.OpenMainUi();
+//        UiController.Instance.OpenMainUi();
+        RemoveAllCharacters();
+        SpawnCharacters(SpawnCount);
     }
 
     public void EndGame() {
@@ -37,6 +59,13 @@ public class GameManager : MonoBehaviour {
             Vector3 newPos = GetRandomPointOnNavMesh();
             character.transform.position = newPos;
         }
+    }
+
+    private void RemoveAllCharacters() {
+        foreach (var character in VirusCharacterController.AllCharacters) {
+            Destroy(character.gameObject);
+        }
+        VirusCharacterController.AllCharacters.Clear();
     }
 
     private Vector3 GetRandomPointOnNavMesh() {
