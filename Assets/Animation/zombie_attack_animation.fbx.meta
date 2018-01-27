@@ -1,72 +1,64 @@
 fileFormatVersion: 2
-guid: fa937f9c1c69ec04cb116b1a05bdc65a
-timeCreated: 1517049412
+guid: 3cf980adcf5390348a2cbd3c8dad52d7
+timeCreated: 1517074076
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
     100000: Basic_character
-    100002: //RootNode
-    100004: Controllers_grp
-    100006: front1
-    100008: head
-    100010: L__arm
-    100012: L__elbow
-    100014: L__foot
-    100016: L__hand
-    100018: L__knee
-    100020: L__leg
-    100022: Leg
-    100024: Leg1
-    100026: Main
-    100028: Neck
-    100030: R_arm
-    100032: R_elbow
-    100034: R_foot
-    100036: R_hand
-    100038: R_knee
-    100040: R_leg
-    100042: Torso
-    100044: upper_body
+    100002: head
+    100004: L__arm
+    100006: L__elbow
+    100008: L__foot
+    100010: L__hand
+    100012: L__knee
+    100014: L__leg
+    100016: Leg
+    100018: Leg1
+    100020: Main
+    100022: Neck
+    100024: R_arm
+    100026: R_elbow
+    100028: R_foot
+    100030: R_hand
+    100032: R_knee
+    100034: R_leg
+    100036: Torso
+    100038: upper_body
+    100040: //RootNode
     400000: Basic_character
-    400002: //RootNode
-    400004: Controllers_grp
-    400006: front1
-    400008: head
-    400010: L__arm
-    400012: L__elbow
-    400014: L__foot
-    400016: L__hand
-    400018: L__knee
-    400020: L__leg
-    400022: Leg
-    400024: Leg1
-    400026: Main
-    400028: Neck
-    400030: R_arm
-    400032: R_elbow
-    400034: R_foot
-    400036: R_hand
-    400038: R_knee
-    400040: R_leg
-    400042: Torso
-    400044: upper_body
-    2000000: front1
+    400002: head
+    400004: L__arm
+    400006: L__elbow
+    400008: L__foot
+    400010: L__hand
+    400012: L__knee
+    400014: L__leg
+    400016: Leg
+    400018: Leg1
+    400020: Main
+    400022: Neck
+    400024: R_arm
+    400026: R_elbow
+    400028: R_foot
+    400030: R_hand
+    400032: R_knee
+    400034: R_leg
+    400036: Torso
+    400038: upper_body
+    400040: //RootNode
+    2100000: lambert1
     4300000: Basic_character
-    7400000: Character_walk_n_run
+    7400000: left_attack
+    7400002: right_attack
     9500000: //RootNode
     13700000: Basic_character
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: lambert1
-    second: {fileID: 2100000, guid: cef93d369018f9147bc82a2bb31e3206, type: 2}
+  externalObjects: {}
   materials:
     importMaterials: 1
     materialName: 0
     materialSearch: 1
-    materialLocation: 0
+    materialLocation: 1
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -89,17 +81,45 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Character_walk_n_run
+      name: left_attack
       takeName: Take 001
       firstFrame: 1
-      lastFrame: 19
+      lastFrame: 25
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: right_attack
+      takeName: Take 001
+      firstFrame: 25
+      lastFrame: 50
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
