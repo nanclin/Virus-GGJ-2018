@@ -17,6 +17,10 @@ ModelImporter:
     100018: streetCobbles
     100020: SubFloor
     100022: SculpurePiedestal
+    100024: Park1_buildings
+    100026: pCylinder5
+    100028: pSphere2
+    100030: paths
     400000: Park
     400002: //RootNode
     400004: park_geo_buildings
@@ -29,6 +33,10 @@ ModelImporter:
     400018: streetCobbles
     400020: SubFloor
     400022: SculpurePiedestal
+    400024: Park1_buildings
+    400026: pCylinder5
+    400028: pSphere2
+    400030: paths
     2100000: lambert1
     2100002: grass_mat
     2100004: CobbleStone_mat
@@ -45,6 +53,10 @@ ModelImporter:
     2300014: streetCobbles
     2300016: SubFloor
     2300018: SculpurePiedestal
+    2300020: Park1_buildings
+    2300022: pCylinder5
+    2300024: pSphere2
+    2300026: paths
     3300000: park_geo_buildings
     3300002: park_grass
     3300004: ParkCobbles
@@ -55,6 +67,10 @@ ModelImporter:
     3300014: streetCobbles
     3300016: SubFloor
     3300018: SculpurePiedestal
+    3300020: Park1_buildings
+    3300022: pCylinder5
+    3300024: pSphere2
+    3300026: paths
     4300000: pCube59
     4300002: park_grass
     4300004: streetCobbles
@@ -65,6 +81,10 @@ ModelImporter:
     4300014: Statues
     4300016: park_geo_buildings
     4300018: SculpurePiedestal
+    4300020: pCylinder5
+    4300022: pSphere2
+    4300024: Park1_buildings
+    4300026: paths
     9500000: //RootNode
   externalObjects: {}
   materials:
