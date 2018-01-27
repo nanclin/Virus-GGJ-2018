@@ -19,9 +19,8 @@ public class VirusCharacterController : MonoBehaviour {
 
     public Transform target;
     public float RotateSpeed;
-    public float WalkSpeed;
-    public float RunSpeed;
     public float AvoidRadius = 5;
+    public float CitizenSpeed = 3;
     public CapsuleCollider SpreadRadiusCollider;
 
     public List<Vector3> PathPoints = new List<Vector3>();
@@ -33,7 +32,7 @@ public class VirusCharacterController : MonoBehaviour {
     private NavMeshPath NavMeshPath;
     private float elapsed = 0.0f;
     private bool IsInRange;
-    private float CurrentSpeed;
+    private bool IsRunning;
 
     private float LastRadius;
 
@@ -54,8 +53,6 @@ public class VirusCharacterController : MonoBehaviour {
     }
 
     void Start() {
-
-        CurrentSpeed = WalkSpeed;
 
         NavMeshPath = new NavMeshPath();
         this.name = "char_" + SpawnedCount.ToString();
@@ -137,7 +134,7 @@ public class VirusCharacterController : MonoBehaviour {
 
     private void OnEnterStateFollowMouse() {
         CurrentState = WalkState.FollowMouse;
-        CurrentSpeed = RunSpeed;
+        IsRunning = true;
     }
 
     private void OnEnterStateFollowCharacter() {
@@ -153,7 +150,7 @@ public class VirusCharacterController : MonoBehaviour {
     }
 
     private void OnExitStateFollowMouse() {
-        CurrentSpeed = WalkSpeed;
+        IsRunning = false;
     }
 
     private void OnExitStateFollowCharacter() {
@@ -266,7 +263,8 @@ public class VirusCharacterController : MonoBehaviour {
 
 
         // walk forward
-        float walkStep = CurrentSpeed * Time.deltaTime;
+        float speed = IsInfected ? ZombieStats.Instance.MovementSpeed * (IsRunning ? 2 : 1) : CitizenSpeed;
+        float walkStep = speed * Time.deltaTime;
 
         Vector3 newPos = transform.position + newDir * walkStep;
         newPos.y = 0;
