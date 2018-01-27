@@ -543,6 +543,23 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 10113a8cf0c31f141a928e3db02b73de, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &366852223 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1054194263896684, guid: 7755ee331e0eb4c84947e10fe1e183c5,
+    type: 2}
+  m_PrefabInternal: {fileID: 850604014}
+--- !u!114 &366852224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 366852223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff26db721962cdf4a8edcdfa9a767d2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  profile: {fileID: 11400000, guid: 470168bf7cebdc048bc543aa217bddc2, type: 2}
 --- !u!1 &374309048
 GameObject:
   m_ObjectHideFlags: 0
@@ -764,7 +781,7 @@ Prefab:
     - target: {fileID: 224373217654208238, guid: 3d9e25b884159474fb7cf0a09f1aa021,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 280.2088
+      value: 835.1852
       objectReference: {fileID: 0}
     - target: {fileID: 224373217654208238, guid: 3d9e25b884159474fb7cf0a09f1aa021,
         type: 2}
@@ -784,7 +801,7 @@ Prefab:
     - target: {fileID: 224396401971154666, guid: 3d9e25b884159474fb7cf0a09f1aa021,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 455.2088
+      value: 1010.1852
       objectReference: {fileID: 0}
     - target: {fileID: 224396401971154666, guid: 3d9e25b884159474fb7cf0a09f1aa021,
         type: 2}
@@ -804,7 +821,7 @@ Prefab:
     - target: {fileID: 224261042168172566, guid: 3d9e25b884159474fb7cf0a09f1aa021,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 630.2088
+      value: 1185.1852
       objectReference: {fileID: 0}
     - target: {fileID: 224261042168172566, guid: 3d9e25b884159474fb7cf0a09f1aa021,
         type: 2}
@@ -824,7 +841,7 @@ Prefab:
     - target: {fileID: 224286273102321296, guid: 3d9e25b884159474fb7cf0a09f1aa021,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 805.2088
+      value: 1360.1852
       objectReference: {fileID: 0}
     - target: {fileID: 224286273102321296, guid: 3d9e25b884159474fb7cf0a09f1aa021,
         type: 2}
@@ -844,7 +861,7 @@ Prefab:
     - target: {fileID: 224682785018645102, guid: 3d9e25b884159474fb7cf0a09f1aa021,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 980.2088
+      value: 1535.1852
       objectReference: {fileID: 0}
     - target: {fileID: 224682785018645102, guid: 3d9e25b884159474fb7cf0a09f1aa021,
         type: 2}
