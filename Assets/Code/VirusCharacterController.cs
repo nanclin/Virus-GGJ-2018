@@ -198,12 +198,13 @@ public class VirusCharacterController : MonoBehaviour {
         if (IsInfected) {
             if (other.gameObject.tag != "Character") return;
             VirusCharacterController enemy = other.gameObject.GetComponent<VirusCharacterController>();
+            if (enemy.IsInfected) return;
+            enemy.EnterState(CurrentState);
             enemy.OnInfected();
         }
     }
 
     private void OnInfected() {
-        EnterState(CurrentState);
         IsInfected = true;
     }
 
@@ -326,12 +327,22 @@ public class VirusCharacterController : MonoBehaviour {
 //        Gizmos.DrawWireSphere(transform.position, AvoidRadius);
 
         // mouse position on world floor
-        Gizmos.color = Color.red;
+        Gizmos.color = Color.yellow;
         Gizmos.DrawSphere(MousePosWorld, 1f);
 
         // infected indicator
         if (IsInfected) {
-            Gizmos.color = Color.magenta;
+            switch (CurrentState) {
+                case WalkState.WalkNavMesh:
+                    Gizmos.color = Color.cyan;
+                    break;
+                case WalkState.FollowMouse:
+                    Gizmos.color = Color.yellow;
+                    break;
+                case WalkState.FollowCharacter:
+                    Gizmos.color = Color.red;
+                    break;
+            }
             Gizmos.DrawWireCube(transform.position, new Vector3(1.5f, 3, 1.5f));
         }
     }
