@@ -17,6 +17,12 @@ public class UpgradeButton : MonoBehaviour
 
 	public void OnUpgrade()
 	{
+		if(GameManager.Instance.GetAvailableSkillPoints() < ZombieStats.Instance.GetUpgradePrice(upgradeType))
+		{
+			return;
+		}
+
+		GameManager.Instance.AddSkillPoints(-ZombieStats.Instance.GetUpgradePrice(upgradeType));
 		ZombieStats.Instance.UpgradeSkill(upgradeType);
 		int level = ZombieStats.Instance.GetUpgradeLevel(upgradeType);
 		SetPoints(ZombieStats.Instance.GetUpgradeLevel(upgradeType));
@@ -39,7 +45,7 @@ public class UpgradeButton : MonoBehaviour
 		{
 			points[i].SetActive(i < pointsCount);
 		}
-		
+
 	}
 
 	private void SetPrice(int price)

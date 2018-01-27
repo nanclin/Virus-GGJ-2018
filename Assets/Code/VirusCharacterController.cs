@@ -206,7 +206,8 @@ public class VirusCharacterController : MonoBehaviour {
         IsInfected = true;
         characterAnimator.SetTrigger("ZombieWalk");
         skinnedMeshRenderer.material = zombieMaterial;
-
+		GameManager.Instance.AddScore(50);
+		GameManager.Instance.AddSkillPoints(1);
         GameManager.Instance.OnInfected();
     }
 

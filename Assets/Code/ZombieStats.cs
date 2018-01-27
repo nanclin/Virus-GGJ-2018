@@ -30,6 +30,11 @@ public class ZombieStats : MonoBehaviour
 		upgradeLevelByUpgradeType = new int[Enum.GetNames(typeof(UpgradeType)).Length];
 	}
 
+	public void Reset()
+	{
+		upgradeLevelByUpgradeType = new int[Enum.GetNames(typeof(UpgradeType)).Length];
+	}
+
 	public int GetUpgradeLevel(UpgradeType upgradeType)
 	{
 		return upgradeLevelByUpgradeType[(int)upgradeType];
@@ -58,6 +63,7 @@ public class ZombieStats : MonoBehaviour
 	{
 		get
 		{
+			Debug.Log("ASD: " + GetUpgradeLevel(UpgradeType.Damage));
 			return damageArray[GetUpgradeLevel(UpgradeType.Damage)];
 		}
 	}
