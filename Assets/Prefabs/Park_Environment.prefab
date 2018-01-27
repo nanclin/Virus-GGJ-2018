@@ -608,7 +608,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4532021976415724}
-  - component: {fileID: 95208549283213008}
   m_Layer: 0
   m_Name: Park_Environment
   m_TagString: Untagged
@@ -6522,20 +6521,3 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1773523400248622}
   m_Mesh: {fileID: 4300022, guid: 2b04ce7ca71a93448baab57d10599e4e, type: 3}
---- !u!95 &95208549283213008
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1339814231202054}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 2b04ce7ca71a93448baab57d10599e4e, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
