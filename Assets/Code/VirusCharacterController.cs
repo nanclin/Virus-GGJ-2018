@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Random = UnityEngine.Random;
+using UnityEngine.AI;
 
 public class VirusCharacterController : MonoBehaviour {
 
@@ -16,18 +17,31 @@ public class VirusCharacterController : MonoBehaviour {
     private bool FollowTarget;
     private Vector3 CurrentTargetPoint;
     private int CurrentPathPointIndex = 0;
+    private int NavCornerIndex;
+    private NavMeshPath NavMeshPath;
+    private float elapsed = 0.0f;
 
+    private bool NavFound = false;
     // Use this for initialization
     void Start() {
-        FollowTarget = true;
-        CurrentTargetPoint = PathPoints[0];
+        CurrentTargetPoint = target.position;
+        NavMeshPath = new NavMeshPath();
     }
 	
     // Update is called once per frame
     void Update() {
         if (FollowTarget) {
 //            FollowingTarget(CurrentTargetPoint, OnTargetReachedPathPoint);
-            FollowingTarget(CurrentTargetPoint, OnRandomTargetReached);
+//            FollowingTarget(CurrentTargetPoint, OnRandomTargetReached);
+            FollowingTarget(CurrentTargetPoint, OnReachedNavCorner);
+        }
+
+        elapsed += Time.deltaTime;
+        if (elapsed > 1.0f && NavFound == false) {
+            elapsed -= 1.0f;
+            FollowTarget = true;
+            NavFound = true;
+            FindNavPath();
         }
     }
 
@@ -49,15 +63,49 @@ public class VirusCharacterController : MonoBehaviour {
         }
     }
 
+    private Vector3 GetRandomPosition() {
+        float size = AreaSize * 0.5f;
+        float x = Random.Range(-size, size);
+        float z = Random.Range(-size, size);
+        return new Vector3(x, 0, z);
+    }
+
+    private void FindNavPath() {
+        for (int i = 0; i < 10; i++) { // try finding path
+            bool pathFound = NavMesh.CalculatePath(transform.position, GetRandomPosition(), NavMesh.AllAreas, NavMeshPath);
+            if (pathFound) break;
+        }
+
+        if (NavMeshPath.corners.Length == 0) {
+            FollowTarget = false;
+            Debug.Log("no path found");
+            return;
+        }
+
+        NavCornerIndex = 0;
+        CurrentTargetPoint = NavMeshPath.corners[NavCornerIndex];
+    }
+
     private void OnTargetReachedPathPoint() {
 //        FollowTarget = false;
         CurrentPathPointIndex = (CurrentPathPointIndex + 1) % PathPoints.Count;
         CurrentTargetPoint = PathPoints[CurrentPathPointIndex];
     }
 
+    private void OnReachedNavCorner() {
+        NavCornerIndex++;
+        if (NavCornerIndex >= NavMeshPath.corners.Length) {
+            FindNavPath();
+        } else {
+            CurrentTargetPoint = NavMeshPath.corners[NavCornerIndex];
+        }
+    }
+
     private void OnRandomTargetReached() {
         CurrentTargetPoint = GetRandomPosition();
     }
+
+#region Gizmos
 
     private void OnDrawGizmosSelected() {
         Gizmos.color = Color.white;
@@ -73,12 +121,18 @@ public class VirusCharacterController : MonoBehaviour {
     private void OnDrawGizmos() {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(CurrentTargetPoint, 0.5f);
+
+        if (NavMeshPath == null) return;
+
+        Gizmos.color = Color.magenta;
+        for (int i = 0; i < NavMeshPath.corners.Length; i++) {
+            Vector3 corner = NavMeshPath.corners[i];
+            Gizmos.DrawWireSphere(corner, i == 0 ? 0.5f : 0.2f);
+            if (i > 0) {
+                Gizmos.DrawLine(NavMeshPath.corners[i - 1], corner);
+            }
+        }
     }
 
-    private Vector3 GetRandomPosition() {
-        float size = AreaSize * 0.5f;
-        float x = Random.Range(-size, size);
-        float z = Random.Range(-size, size);
-        return new Vector3(x, 0, z);
-    }
+#endregion
 }
