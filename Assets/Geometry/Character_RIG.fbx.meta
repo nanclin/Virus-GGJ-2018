@@ -1,58 +1,71 @@
 fileFormatVersion: 2
-guid: cf84ec3741ec19148b544caabe4b7c6b
-timeCreated: 1517047450
-licenseType: Pro
+guid: 31b8517663ae8284baa4586739804c1b
+timeCreated: 1517051191
+licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
     100000: Basic_character
     100002: //RootNode
-    100004: Head
-    100006: L_arm
-    100008: L_elbow
-    100010: L_foot
-    100012: L_hand
-    100014: L_knee
-    100016: L_leg
-    100018: Main
-    100020: neck
-    100022: R_arm
-    100024: R_arm 1
-    100026: R_elbow
-    100028: R_foot
-    100030: R_knee
-    100032: R_leg
-    100034: Upper_body
-    100036: Upper_torso
+    100004: Controllers_grp
+    100006: front1
+    100008: head
+    100010: L__arm
+    100012: L__elbow
+    100014: L__foot
+    100016: L__hand
+    100018: L__knee
+    100020: L__leg
+    100022: Leg
+    100024: Leg1
+    100026: Main
+    100028: Neck
+    100030: R_arm
+    100032: R_elbow
+    100034: R_foot
+    100036: R_hand
+    100038: R_knee
+    100040: R_leg
+    100042: Torso
+    100044: upper_body
     400000: Basic_character
     400002: //RootNode
-    400004: Head
-    400006: L_arm
-    400008: L_elbow
-    400010: L_foot
-    400012: L_hand
-    400014: L_knee
-    400016: L_leg
-    400018: Main
-    400020: neck
-    400022: R_arm
-    400024: R_arm 1
-    400026: R_elbow
-    400028: R_foot
-    400030: R_knee
-    400032: R_leg
-    400034: Upper_body
-    400036: Upper_torso
-    2100000: lambert1
+    400004: Controllers_grp
+    400006: front1
+    400008: head
+    400010: L__arm
+    400012: L__elbow
+    400014: L__foot
+    400016: L__hand
+    400018: L__knee
+    400020: L__leg
+    400022: Leg
+    400024: Leg1
+    400026: Main
+    400028: Neck
+    400030: R_arm
+    400032: R_elbow
+    400034: R_foot
+    400036: R_hand
+    400038: R_knee
+    400040: R_leg
+    400042: Torso
+    400044: upper_body
+    2000000: front1
     4300000: Basic_character
     9500000: //RootNode
     13700000: Basic_character
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lambert2
+    second: {fileID: 2100000, guid: 4be65532fc016c745977bae96ed5990b, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
     materialSearch: 1
-    materialLocation: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -90,8 +103,6 @@ ModelImporter:
     optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
-    preserveHierarchy: 0
-    indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
