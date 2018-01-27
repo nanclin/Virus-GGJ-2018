@@ -369,7 +369,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1673797652465674}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 3.41, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4462990934138440}
@@ -732,6 +732,10 @@ MonoBehaviour:
   RunSpeed: 5
   AvoidRadius: 5
   PathPoints: []
+  characterAnimator: {fileID: 95492052260716608}
+  skinnedMeshRenderer: {fileID: 137913707668157282}
+  normalMaterial: {fileID: 2100000, guid: 76ec53a070bb4c84984e6b8731da2e17, type: 2}
+  zombieMaterial: {fileID: 2100000, guid: dde4e495b1e48ff4ca01bef44bb527f3, type: 2}
 --- !u!136 &136408680741865002
 CapsuleCollider:
   m_ObjectHideFlags: 1

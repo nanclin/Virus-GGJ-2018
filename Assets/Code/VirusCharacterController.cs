@@ -41,12 +41,19 @@ public class VirusCharacterController : MonoBehaviour {
 
     private bool NavFound = false;
 
+	public Animator characterAnimator;
+
+	public SkinnedMeshRenderer skinnedMeshRenderer;
+	public Material normalMaterial;
+	public Material zombieMaterial;
+
     // Use this for initialization
     void Start() {
 
-        CurrentSpeed = WalkSpeed;
-        
-        NavMeshPath = new NavMeshPath();
+		skinnedMeshRenderer.material = normalMaterial;
+		CurrentSpeed = WalkSpeed;
+		characterAnimator.SetTrigger("NormalWalk");
+		NavMeshPath = new NavMeshPath();
         AllCharacters.Add(this);
         this.name = "char_" + SpawnedCount.ToString();
 
@@ -201,12 +208,19 @@ public class VirusCharacterController : MonoBehaviour {
             if (enemy.IsInfected) return;
             enemy.EnterState(CurrentState);
             enemy.OnInfected();
-        }
+
+			//TODO: Call this 2 lines when you should attack the enemy
+			string attackName = Random.Range(0f, 1f) < 0.5f ? "Attack1" : "Attack2";
+			characterAnimator.SetTrigger(attackName);
+
+		}
     }
 
     private void OnInfected() {
         IsInfected = true;
-    }
+		characterAnimator.SetTrigger("ZombieWalk");
+		skinnedMeshRenderer.material = zombieMaterial;
+	}
 
     private void FollowingTarget(Vector3 targetPosition, Action onTargetReached) {
 
