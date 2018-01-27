@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour {
     }
 
     void Start() {
-        SpawnCharacters(20);
+        SpawnCharacters(2);
     }
 
     public void RestartGame() {
