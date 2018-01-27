@@ -16,11 +16,12 @@ public class VirusCharacterController : MonoBehaviour {
 
     public static List<VirusCharacterController> AllCharacters = new List<VirusCharacterController>();
     private static Vector3 MousePosWorld;
-    private static int SpawnedCount = 0;
+    public static int SpawnedCount = 0;
 
     public Transform target;
     public float RotateSpeed;
     public float WalkSpeed;
+    public float RunSpeed;
     public float AvoidRadius = 5;
 
     public List<Vector3> PathPoints = new List<Vector3>();
@@ -32,31 +33,43 @@ public class VirusCharacterController : MonoBehaviour {
     private NavMeshPath NavMeshPath;
     private float elapsed = 0.0f;
     private bool IsInRange;
+    private float CurrentSpeed;
 
+    private List<VirusCharacterController> CharactersInRange = new List<VirusCharacterController>();
+
+    public bool IsInfected { get; private set; }
 
     private bool NavFound = false;
+
     // Use this for initialization
     void Start() {
-//        if (AllCharacters == null) {
-//            AllCharacters = new List<VirusCharacterController>();
-//            SpawnedCount = 0;
-//        }
-//        CurrentTargetPoint = target.position;
+
+        CurrentSpeed = WalkSpeed;
+        
         NavMeshPath = new NavMeshPath();
         AllCharacters.Add(this);
         this.name = "char_" + SpawnedCount.ToString();
+
+        if (SpawnedCount == 0) {
+            IsInfected = true;
+        }
+
+        EnterState(WalkState.WalkNavMesh);
+
         SpawnedCount++;
     }
 	
     // Update is called once per frame
     void Update() {
 
-        if (Input.GetMouseButtonDown(0)) {
-            EnterState(WalkState.FollowMouse);
-        }
+        if (IsInfected) {
+            if (Input.GetMouseButtonDown(0)) {
+                EnterState(WalkState.FollowMouse);
+            }
 
-        if (Input.GetMouseButtonUp(0)) {
-            EnterState(WalkState.WalkNavMesh);
+            if (Input.GetMouseButtonUp(0)) {
+                EnterState(WalkState.WalkNavMesh);
+            }
         }
 
         ExecuteCurrentState();
@@ -119,6 +132,7 @@ public class VirusCharacterController : MonoBehaviour {
 
     private void OnEnterStateFollowMouse() {
         CurrentState = WalkState.FollowMouse;
+        CurrentSpeed = RunSpeed;
     }
 
     private void OnEnterStateFollowCharacter() {
@@ -134,7 +148,7 @@ public class VirusCharacterController : MonoBehaviour {
     }
 
     private void OnExitStateFollowMouse() {
-
+        CurrentSpeed = WalkSpeed;
     }
 
     private void OnExitStateFollowCharacter() {
@@ -180,6 +194,19 @@ public class VirusCharacterController : MonoBehaviour {
 
 #endregion
 
+    void OnTriggerEnter(Collider other) {
+        if (IsInfected) {
+            if (other.gameObject.tag != "Character") return;
+            VirusCharacterController enemy = other.gameObject.GetComponent<VirusCharacterController>();
+            enemy.OnInfected();
+        }
+    }
+
+    private void OnInfected() {
+        EnterState(CurrentState);
+        IsInfected = true;
+    }
+
     private void FollowingTarget(Vector3 targetPosition, Action onTargetReached) {
 
         Vector3 startDir = transform.forward;
@@ -193,6 +220,8 @@ public class VirusCharacterController : MonoBehaviour {
         Debug.DrawRay(transform.position, targetDir * 3, Color.blue);
 
         IsInRange = false;
+        CharactersInRange.Clear();
+
         // avoid other characters
         for (int i = 0; i < AllCharacters.Count; i++) {
             VirusCharacterController character = AllCharacters[i];
@@ -213,6 +242,8 @@ public class VirusCharacterController : MonoBehaviour {
                 avoidDir += -enemyDir.normalized * avoidFactor01;
                 Debug.DrawRay(transform.position, -enemyDir.normalized * avoidFactor01 * 3, Color.red);
                 IsInRange = true;
+                CharactersInRange.Add(character);
+//                character.IsInfected = true;
             }
         }
 
@@ -229,7 +260,7 @@ public class VirusCharacterController : MonoBehaviour {
 
 
         // walk forward
-        float walkStep = WalkSpeed * Time.deltaTime;
+        float walkStep = CurrentSpeed * Time.deltaTime;
 
         Vector3 newPos = transform.position + newDir * walkStep;
         newPos.y = 0;
@@ -241,7 +272,6 @@ public class VirusCharacterController : MonoBehaviour {
             onTargetReached();
         }
     }
-
 
     private void FindNavPath() {
         Vector3 startPos = transform.position;
@@ -278,25 +308,32 @@ public class VirusCharacterController : MonoBehaviour {
 
     private void OnDrawGizmos() {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(TargetPosition, 0.5f);
+        Gizmos.DrawWireSphere(TargetPosition, 0.1f);
 
         if (NavMeshPath == null) return;
 
-        Gizmos.color = Color.magenta;
-        for (int i = 0; i < NavMeshPath.corners.Length; i++) {
-            Vector3 corner = NavMeshPath.corners[i];
-//            Gizmos.DrawWireSphere(corner, i == 0 ? 0.5f : 0.2f);
-            if (i > 0) {
-                Gizmos.DrawLine(NavMeshPath.corners[i - 1], corner);
-            }
-        }
+//        Gizmos.color = Color.magenta;
+//        for (int i = 0; i < NavMeshPath.corners.Length; i++) {
+//            Vector3 corner = NavMeshPath.corners[i];
+////            Gizmos.DrawWireSphere(corner, i == 0 ? 0.5f : 0.2f);
+//            if (i > 0) {
+//                Gizmos.DrawLine(NavMeshPath.corners[i - 1], corner);
+//            }
+//        }
 
-        // avoid radius
-        Gizmos.color = IsInRange ? Color.red : Color.gray;
-        Gizmos.DrawWireSphere(transform.position, AvoidRadius);
+//        // avoid radius
+//        Gizmos.color = IsInRange ? Color.red : Color.gray;
+//        Gizmos.DrawWireSphere(transform.position, AvoidRadius);
 
+        // mouse position on world floor
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(MousePosWorld, 1f);
+
+        // infected indicator
+        if (IsInfected) {
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawWireCube(transform.position, new Vector3(1.5f, 3, 1.5f));
+        }
     }
 
 #endregion

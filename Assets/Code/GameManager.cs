@@ -66,6 +66,7 @@ public class GameManager : MonoBehaviour {
             Destroy(character.gameObject);
         }
         VirusCharacterController.AllCharacters.Clear();
+        VirusCharacterController.SpawnedCount = 0;
     }
 
     private Vector3 GetRandomPointOnNavMesh() {
