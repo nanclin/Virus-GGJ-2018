@@ -46,21 +46,16 @@ public class VirusCharacterController : MonoBehaviour {
     public Material normalMaterial;
     public Material zombieMaterial;
 
-    // Use this for initialization
+    void Awake() {
+        AllCharacters.Add(this);
+    }
+
     void Start() {
 
-        skinnedMeshRenderer.material = normalMaterial;
         CurrentSpeed = WalkSpeed;
 
         NavMeshPath = new NavMeshPath();
-        AllCharacters.Add(this);
         this.name = "char_" + SpawnedCount.ToString();
-
-        if (SpawnedCount == 0) {
-            OnInfected();
-        } else {
-            characterAnimator.SetTrigger("NormalWalk");
-        }
 
         EnterState(WalkState.WalkNavMesh);
 
@@ -192,17 +187,19 @@ public class VirusCharacterController : MonoBehaviour {
             enemy.EnterState(CurrentState);
             enemy.OnInfected();
 
-            //TODO: Call this 2 lines when you should attack the enemy
-            string attackName = Random.Range(0f, 1f) < 0.5f ? "Attack1" : "Attack2";
-            characterAnimator.SetTrigger(attackName);
+//            //TODO: Call this 2 lines when you should attack the enemy
+//            string attackName = Random.Range(0f, 1f) < 0.5f ? "Attack1" : "Attack2";
+//            characterAnimator.SetTrigger(attackName);
 
         }
     }
 
-    private void OnInfected() {
+    public void OnInfected() {
         IsInfected = true;
         characterAnimator.SetTrigger("ZombieWalk");
         skinnedMeshRenderer.material = zombieMaterial;
+
+        GameManager.Instance.OnInfected();
     }
 
     private void FollowingTarget(Vector3 targetPosition, Action onTargetReached) {
@@ -272,6 +269,8 @@ public class VirusCharacterController : MonoBehaviour {
     }
 
     private void FindNavPath() {
+        if (NavMeshPath == null) return;
+
         Vector3 startPos = transform.position;
         for (int i = 0; i < 10; i++) { // try finding path
             bool pathFound = NavMesh.CalculatePath(startPos, GameManager.Instance.GetRandomArenaPosition(), NavMesh.AllAreas, NavMeshPath);

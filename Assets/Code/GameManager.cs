@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour {
     public float AreaSize = 50;
     public Camera MainCamera;
     public int SpawnCount = 3;
+    public int InfectedCount = 0;
 
     public static GameManager Instance {
         get {
@@ -56,7 +57,8 @@ public class GameManager : MonoBehaviour {
     }
 
     public void RestartGame() {
-//        UiController.Instance.OpenMainUi();
+        InfectedCount = 0;
+        UiController.Instance.OpenMainUi();
         RemoveAllCharacters();
         SpawnCharacters(SpawnCount);
         CursorController.instance.Restart();
@@ -72,6 +74,7 @@ public class GameManager : MonoBehaviour {
             Vector3 newPos = GetRandomPointOnNavMesh();
             character.transform.position = newPos;
         }
+        VirusCharacterController.AllCharacters[0].OnInfected();
     }
 
     private void RemoveAllCharacters() {
@@ -91,6 +94,13 @@ public class GameManager : MonoBehaviour {
             return randomPos;
         }
         throw new Exception("no random point on NavMesh found");
+    }
+
+    public void OnInfected() {
+        InfectedCount++;
+        if (InfectedCount >= VirusCharacterController.AllCharacters.Count) {
+            EndGame();
+        }
     }
 
     public Vector3 GetRandomArenaPosition() {
