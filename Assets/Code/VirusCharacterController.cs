@@ -12,7 +12,6 @@ public class VirusCharacterController : MonoBehaviour {
     public Transform target;
     public float RotateSpeed;
     public float WalkSpeed;
-    public float AreaSize = 50;
     public float AvoidRadius = 5;
 
     public List<Vector3> PathPoints = new List<Vector3>();
@@ -27,7 +26,7 @@ public class VirusCharacterController : MonoBehaviour {
     private bool NavFound = false;
     // Use this for initialization
     void Start() {
-        CurrentTargetPoint = target.position;
+//        CurrentTargetPoint = target.position;
         NavMeshPath = new NavMeshPath();
         AllCharacters.Add(this);
     }
@@ -70,6 +69,7 @@ public class VirusCharacterController : MonoBehaviour {
             if (character == this) continue;
 
             Vector3 enemyDir = character.transform.position - transform.position;
+            enemyDir.y = 0;
             float dist = enemyDir.magnitude;
 
             // if in range of enemy
@@ -83,7 +83,9 @@ public class VirusCharacterController : MonoBehaviour {
             Debug.DrawRay(transform.position, walkVector, Color.green);
         }
 
-        transform.position += walkVector * walkStep;
+        Vector3 newPos = transform.position + walkVector * walkStep;
+        newPos.y = 0;
+        transform.position = newPos;
 
         // distance to target
         float distanceSquared = Vector3.SqrMagnitude(targetPosition - transform.position);
@@ -93,16 +95,9 @@ public class VirusCharacterController : MonoBehaviour {
         }
     }
 
-    private Vector3 GetRandomPosition() {
-        float size = AreaSize * 0.5f;
-        float x = Random.Range(-size, size);
-        float z = Random.Range(-size, size);
-        return new Vector3(x, 0, z);
-    }
-
     private void FindNavPath() {
         for (int i = 0; i < 10; i++) { // try finding path
-            bool pathFound = NavMesh.CalculatePath(transform.position, GetRandomPosition(), NavMesh.AllAreas, NavMeshPath);
+            bool pathFound = NavMesh.CalculatePath(transform.position, GameManager.Instance.GetRandomArenaPosition(), NavMesh.AllAreas, NavMeshPath);
             if (pathFound) break;
         }
 
@@ -132,7 +127,7 @@ public class VirusCharacterController : MonoBehaviour {
     }
 
     private void OnRandomTargetReached() {
-        CurrentTargetPoint = GetRandomPosition();
+        CurrentTargetPoint = GameManager.Instance.GetRandomArenaPosition();
     }
 
 #region Gizmos
