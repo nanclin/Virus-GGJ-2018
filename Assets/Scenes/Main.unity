@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028355, g: 0.22571374, b: 0.30692255, a: 1}
+  m_IndirectSpecularColor: {r: 0.24647516, g: 0.28234524, b: 0.345703, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -550,6 +550,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114891676295443300, guid: 075eb2d65c005418cb1cfb2aef75c91a,
+        type: 2}
+      propertyPath: PathPoints.Array.size
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 4139529460596076, guid: 075eb2d65c005418cb1cfb2aef75c91a, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -587,6 +592,41 @@ Prefab:
       propertyPath: target
       value: 
       objectReference: {fileID: 1521621538}
+    - target: {fileID: 114891676295443300, guid: 075eb2d65c005418cb1cfb2aef75c91a,
+        type: 2}
+      propertyPath: PathPoints.Array.data[0].x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114891676295443300, guid: 075eb2d65c005418cb1cfb2aef75c91a,
+        type: 2}
+      propertyPath: PathPoints.Array.data[1].x
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114891676295443300, guid: 075eb2d65c005418cb1cfb2aef75c91a,
+        type: 2}
+      propertyPath: PathPoints.Array.data[2].x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114891676295443300, guid: 075eb2d65c005418cb1cfb2aef75c91a,
+        type: 2}
+      propertyPath: PathPoints.Array.data[1].z
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114891676295443300, guid: 075eb2d65c005418cb1cfb2aef75c91a,
+        type: 2}
+      propertyPath: PathPoints.Array.data[2].z
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114891676295443300, guid: 075eb2d65c005418cb1cfb2aef75c91a,
+        type: 2}
+      propertyPath: PathPoints.Array.data[3].x
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114891676295443300, guid: 075eb2d65c005418cb1cfb2aef75c91a,
+        type: 2}
+      propertyPath: PathPoints.Array.data[3].z
+      value: 15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 075eb2d65c005418cb1cfb2aef75c91a, type: 2}
   m_IsPrefabParent: 0
