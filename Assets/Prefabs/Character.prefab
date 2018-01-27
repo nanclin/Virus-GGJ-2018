@@ -731,6 +731,7 @@ MonoBehaviour:
   WalkSpeed: 3
   RunSpeed: 5
   AvoidRadius: 5
+  SpreadRadiusCollider: {fileID: 136754440573393550}
   PathPoints: []
   characterAnimator: {fileID: 95492052260716608}
   skinnedMeshRenderer: {fileID: 137913707668157282}
