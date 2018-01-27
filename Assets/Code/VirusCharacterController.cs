@@ -52,13 +52,15 @@ public class VirusCharacterController : MonoBehaviour {
 
         skinnedMeshRenderer.material = normalMaterial;
         CurrentSpeed = WalkSpeed;
-        characterAnimator.SetTrigger("NormalWalk");
+
         NavMeshPath = new NavMeshPath();
         AllCharacters.Add(this);
         this.name = "char_" + SpawnedCount.ToString();
 
         if (SpawnedCount == 0) {
             OnInfected();
+        } else {
+            characterAnimator.SetTrigger("NormalWalk");
         }
 
         EnterState(WalkState.WalkNavMesh);
