@@ -18,4 +18,14 @@ public class GameManager : MonoBehaviour
 	{
 		instance = this;
 	}
+
+	public void RestartGame()
+	{
+		UiController.Instance.OpenMainUi();
+	}
+
+	public void EndGame()
+	{
+		UiController.Instance.OpenPostmatch();
+	}
 }

@@ -17,11 +17,13 @@ public class UiController : MonoBehaviour
 	public Text scoreText;
 	public Text skillPointsText;
 
+	public GameObject mainUiGo;
+	public GameObject postmatchGo;
+
 	private void Awake()
 	{
 		instance = this;
 	}
-
 
 	public void SetScore(int score)
 	{
@@ -31,5 +33,17 @@ public class UiController : MonoBehaviour
 	public void SetSkillPoints(int skillPoints)
 	{
 		skillPointsText.text = "Skill points: " + skillPoints;
+	}
+
+	public void OpenMainUi()
+	{
+		mainUiGo.SetActive(true);
+		postmatchGo.SetActive(false);
+	}
+
+	public void OpenPostmatch()
+	{
+		mainUiGo.SetActive(false);
+		postmatchGo.SetActive(true);
 	}
 }
