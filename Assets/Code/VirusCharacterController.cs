@@ -58,7 +58,7 @@ public class VirusCharacterController : MonoBehaviour {
         this.name = "char_" + SpawnedCount.ToString();
 
         if (SpawnedCount == 0) {
-            IsInfected = true;
+            OnInfected();
         }
 
         EnterState(WalkState.WalkNavMesh);
