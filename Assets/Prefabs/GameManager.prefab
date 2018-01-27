@@ -54,3 +54,5 @@ MonoBehaviour:
   CharacterPrefab: {fileID: 114099988643901956, guid: 1269d4d42d9e1d3429a0079fd757a730,
     type: 2}
   AreaSize: 50
+  MainCamera: {fileID: 0}
+  SpawnCount: 10
