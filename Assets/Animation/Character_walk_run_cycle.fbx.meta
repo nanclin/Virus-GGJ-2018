@@ -53,7 +53,7 @@ ModelImporter:
     400044: upper_body
     2000000: front1
     4300000: Basic_character
-    7400000: Take 001
+    7400000: Character_walk_n_run
     9500000: //RootNode
     13700000: Basic_character
   externalObjects:
@@ -61,7 +61,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: lambert1
-    second: {fileID: 2100000, guid: feb3b7a899e1ca44daf1ec2be865ef6b, type: 2}
+    second: {fileID: 2100000, guid: cef93d369018f9147bc82a2bb31e3206, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
@@ -89,7 +89,7 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Take 001
+      name: Character_walk_n_run
       takeName: Take 001
       firstFrame: 1
       lastFrame: 19
