@@ -1,58 +1,59 @@
 fileFormatVersion: 2
-guid: 1844c5f3f93737e4186461d206dd5a57
-timeCreated: 1517057065
+guid: d767e833133243c4784c2bd3a33a07f2
+timeCreated: 1517056540
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
     100000: Basic_character
-    100002: //RootNode
-    100004: Controllers_grp
-    100006: front1
-    100008: head
-    100010: L__arm
-    100012: L__elbow
-    100014: L__foot
-    100016: L__hand
-    100018: L__knee
-    100020: L__leg
-    100022: Leg
-    100024: Leg1
-    100026: Main
-    100028: Neck
-    100030: R_arm
-    100032: R_elbow
-    100034: R_foot
-    100036: R_hand
-    100038: R_knee
-    100040: R_leg
-    100042: Torso
-    100044: upper_body
+    100002: Controllers_grp
+    100004: front1
+    100006: head
+    100008: L__arm
+    100010: L__elbow
+    100012: L__foot
+    100014: L__hand
+    100016: L__knee
+    100018: L__leg
+    100020: Leg
+    100022: Leg1
+    100024: Main
+    100026: Neck
+    100028: R_arm
+    100030: R_elbow
+    100032: R_foot
+    100034: R_hand
+    100036: R_knee
+    100038: R_leg
+    100040: Torso
+    100042: upper_body
+    100044: //RootNode
     400000: Basic_character
-    400002: //RootNode
-    400004: Controllers_grp
-    400006: front1
-    400008: head
-    400010: L__arm
-    400012: L__elbow
-    400014: L__foot
-    400016: L__hand
-    400018: L__knee
-    400020: L__leg
-    400022: Leg
-    400024: Leg1
-    400026: Main
-    400028: Neck
-    400030: R_arm
-    400032: R_elbow
-    400034: R_foot
-    400036: R_hand
-    400038: R_knee
-    400040: R_leg
-    400042: Torso
-    400044: upper_body
+    400002: Controllers_grp
+    400004: front1
+    400006: head
+    400008: L__arm
+    400010: L__elbow
+    400012: L__foot
+    400014: L__hand
+    400016: L__knee
+    400018: L__leg
+    400020: Leg
+    400022: Leg1
+    400024: Main
+    400026: Neck
+    400028: R_arm
+    400030: R_elbow
+    400032: R_foot
+    400034: R_hand
+    400036: R_knee
+    400038: R_leg
+    400040: Torso
+    400042: upper_body
+    400044: //RootNode
     2000000: front1
     4300000: Basic_character
+    7400000: Take 001
     9500000: //RootNode
     13700000: Basic_character
   externalObjects:
@@ -60,7 +61,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: lambert1
-    second: {fileID: 2100000, guid: bd08a84ea00a75c479bffe1f689c6f5b, type: 2}
+    second: {fileID: 2100000, guid: cef93d369018f9147bc82a2bb31e3206, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
@@ -86,7 +87,35 @@ ModelImporter:
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Take 001
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 39
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []
@@ -103,6 +132,8 @@ ModelImporter:
     optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
