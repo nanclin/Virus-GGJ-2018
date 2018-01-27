@@ -15,7 +15,6 @@ public class VirusCharacterController : MonoBehaviour {
     }
 
     public static List<VirusCharacterController> AllCharacters = new List<VirusCharacterController>();
-    private static Vector3 MousePosWorld;
     public static int SpawnedCount = 0;
 
     public Transform target;
@@ -41,24 +40,26 @@ public class VirusCharacterController : MonoBehaviour {
 
     private bool NavFound = false;
 
-	public Animator characterAnimator;
+    public Animator characterAnimator;
 
-	public SkinnedMeshRenderer skinnedMeshRenderer;
-	public Material normalMaterial;
-	public Material zombieMaterial;
+    public SkinnedMeshRenderer skinnedMeshRenderer;
+    public Material normalMaterial;
+    public Material zombieMaterial;
 
     // Use this for initialization
     void Start() {
 
-		skinnedMeshRenderer.material = normalMaterial;
-		CurrentSpeed = WalkSpeed;
-		characterAnimator.SetTrigger("NormalWalk");
-		NavMeshPath = new NavMeshPath();
+        skinnedMeshRenderer.material = normalMaterial;
+        CurrentSpeed = WalkSpeed;
+
+        NavMeshPath = new NavMeshPath();
         AllCharacters.Add(this);
         this.name = "char_" + SpawnedCount.ToString();
 
         if (SpawnedCount == 0) {
-            IsInfected = true;
+            OnInfected();
+        } else {
+            characterAnimator.SetTrigger("NormalWalk");
         }
 
         EnterState(WalkState.WalkNavMesh);
@@ -68,21 +69,12 @@ public class VirusCharacterController : MonoBehaviour {
 	
     // Update is called once per frame
     void Update() {
-
-        if (IsInfected) {
-            if (Input.GetMouseButtonDown(0)) {
-                EnterState(WalkState.FollowMouse);
-            }
-
-            if (Input.GetMouseButtonUp(0)) {
-                EnterState(WalkState.WalkNavMesh);
-            }
-        }
-
         ExecuteCurrentState();
     }
 
     private void EnterState(WalkState newState) {
+
+        if (CurrentState == newState) return;
 
         ExitCurrentState();
 
@@ -182,16 +174,7 @@ public class VirusCharacterController : MonoBehaviour {
     }
 
     private void OnExecuteStateFollowMouse() {
-        Plane plane = new Plane(Vector3.up, 0);
-        Camera camera = GameManager.Instance.MainCamera;
-        float dist;
-        Ray ray = camera.ScreenPointToRay(Input.mousePosition);
-        if (plane.Raycast(ray, out dist)) {
-            MousePosWorld = ray.GetPoint(dist);
-        }
-//        Debug.Log("ExecuteStateFollowMouse - pos: " + MousePosWorld);
-
-        TargetPosition = MousePosWorld;
+        TargetPosition = CursorController.instance.MousePosWorld;
         FollowingTarget(TargetPosition, delegate {
         });
     }
@@ -209,18 +192,18 @@ public class VirusCharacterController : MonoBehaviour {
             enemy.EnterState(CurrentState);
             enemy.OnInfected();
 
-			//TODO: Call this 2 lines when you should attack the enemy
-			string attackName = Random.Range(0f, 1f) < 0.5f ? "Attack1" : "Attack2";
-			characterAnimator.SetTrigger(attackName);
+            //TODO: Call this 2 lines when you should attack the enemy
+            string attackName = Random.Range(0f, 1f) < 0.5f ? "Attack1" : "Attack2";
+            characterAnimator.SetTrigger(attackName);
 
-		}
+        }
     }
 
     private void OnInfected() {
         IsInfected = true;
-		characterAnimator.SetTrigger("ZombieWalk");
-		skinnedMeshRenderer.material = zombieMaterial;
-	}
+        characterAnimator.SetTrigger("ZombieWalk");
+        skinnedMeshRenderer.material = zombieMaterial;
+    }
 
     private void FollowingTarget(Vector3 targetPosition, Action onTargetReached) {
 
@@ -319,6 +302,18 @@ public class VirusCharacterController : MonoBehaviour {
         TargetPosition = GameManager.Instance.GetRandomArenaPosition();
     }
 
+    public void OnMouseDown() {
+        if (IsInfected) {
+            EnterState(WalkState.FollowMouse);
+        }
+    }
+
+    public void OnMouseUp() {
+        if (IsInfected) {
+            EnterState(WalkState.WalkNavMesh);
+        }
+    }
+
 #region Gizmos
 
     private void OnDrawGizmos() {
@@ -339,10 +334,6 @@ public class VirusCharacterController : MonoBehaviour {
 //        // avoid radius
 //        Gizmos.color = IsInRange ? Color.red : Color.gray;
 //        Gizmos.DrawWireSphere(transform.position, AvoidRadius);
-
-        // mouse position on world floor
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawSphere(MousePosWorld, 1f);
 
         // infected indicator
         if (IsInfected) {

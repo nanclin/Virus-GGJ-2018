@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour {
     }
 
     void Start() {
-        SpawnCharacters(SpawnCount);
+        RestartGame();
     }
 
     void Update() {
@@ -40,13 +40,26 @@ public class GameManager : MonoBehaviour {
             Time.timeScale = 0.5f;
         } else if (Input.GetKeyDown(KeyCode.Alpha4)) {
             Time.timeScale = 0.1f;
-        } 
+        }
+    }
+
+    public void StartFollow() {
+        foreach (var character in VirusCharacterController.AllCharacters) {
+            character.OnMouseDown();
+        }
+    }
+
+    public void EndFollow() {
+        foreach (var character in VirusCharacterController.AllCharacters) {
+            character.OnMouseUp();
+        }
     }
 
     public void RestartGame() {
 //        UiController.Instance.OpenMainUi();
         RemoveAllCharacters();
         SpawnCharacters(SpawnCount);
+        CursorController.instance.Restart();
     }
 
     public void EndGame() {
