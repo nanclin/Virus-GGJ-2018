@@ -15,7 +15,6 @@ public class VirusCharacterController : MonoBehaviour {
     }
 
     public static List<VirusCharacterController> AllCharacters = new List<VirusCharacterController>();
-    private static Vector3 MousePosWorld;
     public static int SpawnedCount = 0;
 
     public Transform target;
@@ -74,6 +73,8 @@ public class VirusCharacterController : MonoBehaviour {
     }
 
     private void EnterState(WalkState newState) {
+
+        if (CurrentState == newState) return;
 
         ExitCurrentState();
 
@@ -173,16 +174,7 @@ public class VirusCharacterController : MonoBehaviour {
     }
 
     private void OnExecuteStateFollowMouse() {
-        Plane plane = new Plane(Vector3.up, 0);
-        Camera camera = GameManager.Instance.MainCamera;
-        float dist;
-        Ray ray = camera.ScreenPointToRay(Input.mousePosition);
-        if (plane.Raycast(ray, out dist)) {
-            MousePosWorld = ray.GetPoint(dist);
-        }
-//        Debug.Log("ExecuteStateFollowMouse - pos: " + MousePosWorld);
-
-        TargetPosition = MousePosWorld;
+        TargetPosition = CursorController.instance.MousePosWorld;
         FollowingTarget(TargetPosition, delegate {
         });
     }
@@ -342,10 +334,6 @@ public class VirusCharacterController : MonoBehaviour {
 //        // avoid radius
 //        Gizmos.color = IsInRange ? Color.red : Color.gray;
 //        Gizmos.DrawWireSphere(transform.position, AvoidRadius);
-
-        // mouse position on world floor
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawSphere(MousePosWorld, 1f);
 
         // infected indicator
         if (IsInfected) {
