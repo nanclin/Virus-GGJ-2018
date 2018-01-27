@@ -16,6 +16,7 @@ ModelImporter:
     100016: Statues
     100018: streetCobbles
     100020: SubFloor
+    100022: SculpurePiedestal
     400000: Park
     400002: //RootNode
     400004: park_geo_buildings
@@ -27,6 +28,7 @@ ModelImporter:
     400016: Statues
     400018: streetCobbles
     400020: SubFloor
+    400022: SculpurePiedestal
     2100000: lambert1
     2100002: grass_mat
     2100004: CobbleStone_mat
@@ -42,6 +44,7 @@ ModelImporter:
     2300012: Statues
     2300014: streetCobbles
     2300016: SubFloor
+    2300018: SculpurePiedestal
     3300000: park_geo_buildings
     3300002: park_grass
     3300004: ParkCobbles
@@ -51,6 +54,7 @@ ModelImporter:
     3300012: Statues
     3300014: streetCobbles
     3300016: SubFloor
+    3300018: SculpurePiedestal
     4300000: pCube59
     4300002: park_grass
     4300004: streetCobbles
@@ -60,6 +64,7 @@ ModelImporter:
     4300012: PArkObstacles
     4300014: Statues
     4300016: park_geo_buildings
+    4300018: SculpurePiedestal
     9500000: //RootNode
   externalObjects: {}
   materials:
@@ -91,7 +96,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 0.0001
     meshCompression: 0
     addColliders: 0
     importVisibility: 1
