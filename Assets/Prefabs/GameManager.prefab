@@ -56,3 +56,4 @@ MonoBehaviour:
   AreaSize: 50
   MainCamera: {fileID: 0}
   SpawnCount: 10
+  Cursor: {fileID: 4183839682613184, guid: 267d30537fd214f528895a5eacac13d2, type: 2}

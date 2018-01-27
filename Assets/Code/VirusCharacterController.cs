@@ -41,19 +41,19 @@ public class VirusCharacterController : MonoBehaviour {
 
     private bool NavFound = false;
 
-	public Animator characterAnimator;
+    public Animator characterAnimator;
 
-	public SkinnedMeshRenderer skinnedMeshRenderer;
-	public Material normalMaterial;
-	public Material zombieMaterial;
+    public SkinnedMeshRenderer skinnedMeshRenderer;
+    public Material normalMaterial;
+    public Material zombieMaterial;
 
     // Use this for initialization
     void Start() {
 
-		skinnedMeshRenderer.material = normalMaterial;
-		CurrentSpeed = WalkSpeed;
-		characterAnimator.SetTrigger("NormalWalk");
-		NavMeshPath = new NavMeshPath();
+        skinnedMeshRenderer.material = normalMaterial;
+        CurrentSpeed = WalkSpeed;
+        characterAnimator.SetTrigger("NormalWalk");
+        NavMeshPath = new NavMeshPath();
         AllCharacters.Add(this);
         this.name = "char_" + SpawnedCount.ToString();
 
@@ -68,17 +68,6 @@ public class VirusCharacterController : MonoBehaviour {
 	
     // Update is called once per frame
     void Update() {
-
-        if (IsInfected) {
-            if (Input.GetMouseButtonDown(0)) {
-                EnterState(WalkState.FollowMouse);
-            }
-
-            if (Input.GetMouseButtonUp(0)) {
-                EnterState(WalkState.WalkNavMesh);
-            }
-        }
-
         ExecuteCurrentState();
     }
 
@@ -209,18 +198,18 @@ public class VirusCharacterController : MonoBehaviour {
             enemy.EnterState(CurrentState);
             enemy.OnInfected();
 
-			//TODO: Call this 2 lines when you should attack the enemy
-			string attackName = Random.Range(0f, 1f) < 0.5f ? "Attack1" : "Attack2";
-			characterAnimator.SetTrigger(attackName);
+            //TODO: Call this 2 lines when you should attack the enemy
+            string attackName = Random.Range(0f, 1f) < 0.5f ? "Attack1" : "Attack2";
+            characterAnimator.SetTrigger(attackName);
 
-		}
+        }
     }
 
     private void OnInfected() {
         IsInfected = true;
-		characterAnimator.SetTrigger("ZombieWalk");
-		skinnedMeshRenderer.material = zombieMaterial;
-	}
+        characterAnimator.SetTrigger("ZombieWalk");
+        skinnedMeshRenderer.material = zombieMaterial;
+    }
 
     private void FollowingTarget(Vector3 targetPosition, Action onTargetReached) {
 
@@ -317,6 +306,18 @@ public class VirusCharacterController : MonoBehaviour {
 
     private void OnRandomTargetReached() {
         TargetPosition = GameManager.Instance.GetRandomArenaPosition();
+    }
+
+    public void OnMouseDown() {
+        if (IsInfected) {
+            EnterState(WalkState.FollowMouse);
+        }
+    }
+
+    public void OnMouseUp() {
+        if (IsInfected) {
+            EnterState(WalkState.WalkNavMesh);
+        }
     }
 
 #region Gizmos

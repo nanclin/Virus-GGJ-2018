@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour {
     public float AreaSize = 50;
     public Camera MainCamera;
     public int SpawnCount = 3;
+    public static Vector3 MousePosWorld;
+    public Transform Cursor;
 
     public static GameManager Instance {
         get {
@@ -40,7 +42,31 @@ public class GameManager : MonoBehaviour {
             Time.timeScale = 0.5f;
         } else if (Input.GetKeyDown(KeyCode.Alpha4)) {
             Time.timeScale = 0.1f;
-        } 
+        }
+
+
+        if (Input.GetMouseButtonDown(0)) {
+            foreach (var character in VirusCharacterController.AllCharacters) {
+                character.OnMouseDown();
+            }
+            Cursor.gameObject.SetActive(true);
+        }
+
+        if (Input.GetMouseButtonUp(0)) {
+            foreach (var character in VirusCharacterController.AllCharacters) {
+                character.OnMouseUp();
+            }
+            Cursor.gameObject.SetActive(false);
+        }
+
+        // mouse input
+        Plane plane = new Plane(Vector3.up, 0);
+        float dist;
+        Ray ray = MainCamera.ScreenPointToRay(Input.mousePosition);
+        if (plane.Raycast(ray, out dist)) {
+            MousePosWorld = ray.GetPoint(dist);
+            Cursor.position = MousePosWorld;
+        }
     }
 
     public void RestartGame() {
