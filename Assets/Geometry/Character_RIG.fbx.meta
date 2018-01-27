@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 31b8517663ae8284baa4586739804c1b
-timeCreated: 1517051191
+guid: d10950792ece8fc46866a339b1dbc9fc
+timeCreated: 1517054913
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
@@ -52,15 +52,16 @@ ModelImporter:
     400042: Torso
     400044: upper_body
     2000000: front1
+    2300000: Basic_character
+    3300000: Basic_character
     4300000: Basic_character
     9500000: //RootNode
-    13700000: Basic_character
   externalObjects:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: lambert2
-    second: {fileID: 2100000, guid: 4be65532fc016c745977bae96ed5990b, type: 2}
+      name: lambert1
+    second: {fileID: 2100000, guid: bd08a84ea00a75c479bffe1f689c6f5b, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
