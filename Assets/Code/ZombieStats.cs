@@ -38,6 +38,7 @@ public class ZombieStats : MonoBehaviour
 	public void UpgradeSkill(UpgradeType upgradeType)
 	{
 		upgradeLevelByUpgradeType[(int)upgradeType]++;
+		upgradeLevelByUpgradeType[(int)upgradeType] = Mathf.Min(upgradeLevelByUpgradeType[(int)upgradeType], 9);
 	}
 
 	public int GetUpgradePrice(UpgradeType upgradeType)
