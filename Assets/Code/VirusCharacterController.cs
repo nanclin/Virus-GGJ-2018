@@ -22,6 +22,7 @@ public class VirusCharacterController : MonoBehaviour {
     public float WalkSpeed;
     public float RunSpeed;
     public float AvoidRadius = 5;
+    public CapsuleCollider SpreadRadiusCollider;
 
     public List<Vector3> PathPoints = new List<Vector3>();
 
@@ -33,6 +34,8 @@ public class VirusCharacterController : MonoBehaviour {
     private float elapsed = 0.0f;
     private bool IsInRange;
     private float CurrentSpeed;
+
+    private float LastRadius;
 
     private List<VirusCharacterController> CharactersInRange = new List<VirusCharacterController>();
 
@@ -60,11 +63,19 @@ public class VirusCharacterController : MonoBehaviour {
         EnterState(WalkState.WalkNavMesh);
 
         SpawnedCount++;
+
+        LastRadius = ZombieStats.Instance.Radius;
     }
 	
     // Update is called once per frame
     void Update() {
         ExecuteCurrentState();
+
+        // check for stats update
+        if (ZombieStats.Instance.Radius != LastRadius) {
+            SpreadRadiusCollider.radius = ZombieStats.Instance.Radius;
+            LastRadius = ZombieStats.Instance.Radius;
+        }
     }
 
     private void EnterState(WalkState newState) {
