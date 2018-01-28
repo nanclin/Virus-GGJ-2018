@@ -51,6 +51,8 @@ public class GameManager : MonoBehaviour
 	void Start()
 	{
 		RestartGame();
+		AddScore(0);
+		AddSkillPoints(0);
 	}
 
 	void Update()
@@ -100,10 +102,8 @@ public class GameManager : MonoBehaviour
 
 	public void RestartGame()
 	{
-		ZombieStats.Instance.Reset();
-		AddScore(-score);
-		AddSkillPoints(-availableSkillPoints);
-
+		//ZombieStats.Instance.Reset();
+		
 		InfectedCount = 0;
 		UiController.Instance.OpenMainUi();
 		RemoveAllCharacters();
