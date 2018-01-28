@@ -287,12 +287,11 @@ public class VirusCharacterController : MonoBehaviour {
 
         // walk forward
         float speed = IsInfected ? ZombieStats.Instance.MovementSpeed * (IsRunning ? 2 : 1) : CitizenSpeed;
-		if(IsInfected)
-		{
-			characterAnimator.SetFloat("ZombieRunSpeed", speed);
-		}
+        if (IsInfected) {
+            characterAnimator.SetFloat("ZombieRunSpeed", speed);
+        }
 		
-		float walkStep = speed * Time.deltaTime;
+        float walkStep = speed * Time.deltaTime;
 
         Vector3 newPos = transform.position + newDir * walkStep;
         newPos.y = 0;
@@ -358,6 +357,7 @@ public class VirusCharacterController : MonoBehaviour {
 
     private void OnDied() {
         ZombieCount--;
+        GameManager.Instance.InfectedCount--;
         Debug.Log("zombie count: " + ZombieCount);
         if (ZombieCount == 0) {
             GameManager.Instance.EndGame();
