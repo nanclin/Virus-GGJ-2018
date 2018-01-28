@@ -306,7 +306,7 @@ MonoBehaviour:
   DrainSpeed: 0.3
   FillSpeed: 0.2
   CursorFuel: 1
-  CursorFuelMax: 1
+  CursorFuelMax: 1.5
   ColorBlendCurve:
     serializedVersion: 2
     m_Curve:
