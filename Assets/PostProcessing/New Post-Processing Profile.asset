@@ -132,10 +132,10 @@ MonoBehaviour:
         blue: {x: 0, y: 0, z: 1}
         currentEditingChannel: 0
       colorWheels:
-        mode: 0
+        mode: 1
         log:
           slope: {r: 1, g: 1, b: 1, a: 0}
-          power: {r: 1, g: 1, b: 1, a: 0.3974082}
+          power: {r: 1, g: 1, b: 1, a: 0.3110151}
           offset: {r: 1, g: 1, b: 1, a: 0}
         linear:
           lift: {r: 1, g: 1, b: 1, a: 0}
@@ -153,14 +153,14 @@ MonoBehaviour:
               outSlope: 1
               tangentMode: 0
             - serializedVersion: 2
-              time: 0.26262626
-              value: 0.17226893
+              time: 0.23434344
+              value: 0.07563025
               inSlope: 1.0867705
               outSlope: 1.0867705
               tangentMode: 0
             - serializedVersion: 2
-              time: 0.83434343
-              value: 0.8907563
+              time: 0.8727273
+              value: 0.89495796
               inSlope: 1
               outSlope: 1
               tangentMode: 0
