@@ -72,6 +72,7 @@ public class VirusCharacterController : MonoBehaviour {
         SpawnedCount++;
 
         LastRadius = ZombieStats.Instance.Radius;
+        SpreadRadiusCollider.radius = ZombieStats.Instance.Radius;
         LifeTimeLeft = ZombieStats.Instance.Lifetime;
     }
 
