@@ -153,10 +153,22 @@ MonoBehaviour:
               outSlope: 1
               tangentMode: 0
             - serializedVersion: 2
-              time: 1
-              value: 1
+              time: 0.25454545
+              value: 0.27310926
+              inSlope: 1.0867705
+              outSlope: 1.0867705
+              tangentMode: 0
+            - serializedVersion: 2
+              time: 0.83434343
+              value: 0.8907563
               inSlope: 1
               outSlope: 1
+              tangentMode: 0
+            - serializedVersion: 2
+              time: 0.9919192
+              value: 1
+              inSlope: 0.4378593
+              outSlope: 0.4378593
               tangentMode: 0
             m_PreInfinity: 2
             m_PostInfinity: 2
@@ -219,6 +231,12 @@ MonoBehaviour:
               outSlope: 1
               tangentMode: 0
             - serializedVersion: 2
+              time: 0.56363636
+              value: 0.6386554
+              inSlope: 1
+              outSlope: 1
+              tangentMode: 0
+            - serializedVersion: 2
               time: 1
               value: 1
               inSlope: 1
@@ -226,7 +244,7 @@ MonoBehaviour:
               tangentMode: 0
             m_PreInfinity: 2
             m_PostInfinity: 2
-            m_RotationOrder: 4
+            m_RotationOrder: 0
           m_Loop: 0
           m_ZeroValue: 0
           m_Range: 1
@@ -271,9 +289,9 @@ MonoBehaviour:
           m_ZeroValue: 0.5
           m_Range: 1
         e_CurrentEditingCurve: 0
-        e_CurveY: 0
-        e_CurveR: 1
-        e_CurveG: 1
+        e_CurveY: 1
+        e_CurveR: 0
+        e_CurveG: 0
         e_CurveB: 0
   userLut:
     m_Enabled: 0
@@ -298,7 +316,7 @@ MonoBehaviour:
       mode: 0
       color: {r: 0, g: 0, b: 0, a: 1}
       center: {x: 0.5, y: 0.5}
-      intensity: 0.6
+      intensity: 0.536
       smoothness: 0.459
       roundness: 0.538
       mask: {fileID: 0}
