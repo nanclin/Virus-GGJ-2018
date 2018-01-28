@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,6 +23,7 @@ public class UiController : MonoBehaviour
 
 	public AudioClip gameover;
 
+	public GameObject postmatchText2;
 
 	private void Awake()
 	{
@@ -42,6 +44,7 @@ public class UiController : MonoBehaviour
 	{
 		mainUiGo.SetActive(true);
 		postmatchGo.SetActive(false);
+		postmatchText2.SetActive(false);
 	}
 
 	public void OpenPostmatch()
@@ -49,5 +52,12 @@ public class UiController : MonoBehaviour
 		mainUiGo.SetActive(false);
 		postmatchGo.SetActive(true);
 		GameManager.Instance.audioSource.PlayOneShot(gameover);
+		StartCoroutine(ShowDelayedPostmatchText());
+	}
+
+	private IEnumerator ShowDelayedPostmatchText()
+	{
+		yield return new WaitForSeconds(1);
+		postmatchText2.SetActive(true);
 	}
 }
