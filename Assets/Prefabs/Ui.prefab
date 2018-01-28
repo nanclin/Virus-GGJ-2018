@@ -1143,6 +1143,7 @@ MonoBehaviour:
   - {fileID: 1991667594319190}
   - {fileID: 1248525007090996}
   upgradeType: 0
+  buttonSfx: {fileID: 8300000, guid: eaaedd7559f6c5c41982e053d6e81e7b, type: 3}
 --- !u!114 &114077092940382054
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1766,6 +1767,7 @@ MonoBehaviour:
   - {fileID: 1195426112595390}
   - {fileID: 1767767051961216}
   upgradeType: 2
+  buttonSfx: {fileID: 8300000, guid: eaaedd7559f6c5c41982e053d6e81e7b, type: 3}
 --- !u!114 &114310796954914800
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2107,6 +2109,7 @@ MonoBehaviour:
   - {fileID: 1618559940583322}
   - {fileID: 1167234438055890}
   upgradeType: 1
+  buttonSfx: {fileID: 8300000, guid: eaaedd7559f6c5c41982e053d6e81e7b, type: 3}
 --- !u!114 &114579518083862000
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2241,7 +2244,7 @@ MonoBehaviour:
   skillPointsText: {fileID: 114900824949668938}
   mainUiGo: {fileID: 1317089933348474}
   postmatchGo: {fileID: 1180404190908618}
-  ReplayButton: {fileID: 0}
+  gameover: {fileID: 8300000, guid: 66b51a2df0ad61045ba72cad807d32fb, type: 3}
 --- !u!114 &114655799109131550
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2396,6 +2399,7 @@ MonoBehaviour:
   - {fileID: 1445554068732372}
   - {fileID: 1564233645956342}
   upgradeType: 3
+  buttonSfx: {fileID: 8300000, guid: eaaedd7559f6c5c41982e053d6e81e7b, type: 3}
 --- !u!114 &114861863567746916
 MonoBehaviour:
   m_ObjectHideFlags: 1

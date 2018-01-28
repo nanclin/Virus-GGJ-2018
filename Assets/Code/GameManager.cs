@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
 	private int availableSkillPoints = 0;
 	private int score = 0;
 
-
+	public AudioSource audioSource;
 
 	public static GameManager Instance
 	{

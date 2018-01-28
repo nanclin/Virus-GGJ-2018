@@ -5,361 +5,418 @@ using System;
 using Random = UnityEngine.Random;
 using UnityEngine.AI;
 
-public class VirusCharacterController : MonoBehaviour {
+public class VirusCharacterController : MonoBehaviour
+{
 
-    enum WalkState {
-        None,
-        WalkNavMesh,
-        FollowMouse,
-        FollowCharacter,
-    }
+	enum WalkState
+	{
+		None,
+		WalkNavMesh,
+		FollowMouse,
+		FollowCharacter,
+	}
 
-    public static List<VirusCharacterController> AllCharacters = new List<VirusCharacterController>();
-    public static int SpawnedCount = 0;
+	public static List<VirusCharacterController> AllCharacters = new List<VirusCharacterController>();
+	public static int SpawnedCount = 0;
 
-    public Transform target;
-    public float RotateSpeed;
-    public float AvoidRadius = 5;
-    public float CitizenSpeed = 3;
-    public CapsuleCollider SpreadRadiusCollider;
+	public Transform target;
+	public float RotateSpeed;
+	public float AvoidRadius = 5;
+	public float CitizenSpeed = 3;
+	public CapsuleCollider SpreadRadiusCollider;
 
-    public List<Vector3> PathPoints = new List<Vector3>();
+	public List<Vector3> PathPoints = new List<Vector3>();
 
-    private WalkState CurrentState = WalkState.None;
-    private bool FollowTarget;
-    private Vector3 TargetPosition;
-    private int NavCornerIndex;
-    private NavMeshPath NavMeshPath;
-    private float elapsed = 0.0f;
-    private bool IsInRange;
-    private bool IsRunning;
+	private WalkState CurrentState = WalkState.None;
+	private bool FollowTarget;
+	private Vector3 TargetPosition;
+	private int NavCornerIndex;
+	private NavMeshPath NavMeshPath;
+	private float elapsed = 0.0f;
+	private bool IsInRange;
+	private bool IsRunning;
 
-    private float LastRadius;
+	private float LastRadius;
 
-    private List<VirusCharacterController> CharactersInRange = new List<VirusCharacterController>();
+	private List<VirusCharacterController> CharactersInRange = new List<VirusCharacterController>();
 
-    public bool IsInfected { get; private set; }
+	public bool IsInfected { get; private set; }
 
-    private bool NavFound = false;
+	private bool NavFound = false;
 
-    public Animator characterAnimator;
+	public Animator characterAnimator;
 
-    public SkinnedMeshRenderer skinnedMeshRenderer;
-    public Material normalMaterial;
-    public Material zombieMaterial;
+	public SkinnedMeshRenderer skinnedMeshRenderer;
+	public Material[] normalMaterials;
+	public Material zombieMaterial;
 
-    void Awake() {
-        AllCharacters.Add(this);
-    }
+	public ParticleSystem infectedPs;
 
-    void Start() {
+	public AudioClip attackSfx;
 
-        NavMeshPath = new NavMeshPath();
-        this.name = "char_" + SpawnedCount.ToString();
+	void Awake()
+	{
+		AllCharacters.Add(this);
+	}
 
-        EnterState(WalkState.WalkNavMesh);
+	void Start()
+	{
+		if(!IsInfected)
+		{
+			skinnedMeshRenderer.material = normalMaterials[Random.Range(0, normalMaterials.Length)];
+		}
 
-        SpawnedCount++;
+		NavMeshPath = new NavMeshPath();
+		this.name = "char_" + SpawnedCount.ToString();
 
-        LastRadius = ZombieStats.Instance.Radius;
-    }
-	
-    // Update is called once per frame
-    void Update() {
-        ExecuteCurrentState();
+		EnterState(WalkState.WalkNavMesh);
 
-        // check for stats update
-        if (ZombieStats.Instance.Radius != LastRadius) {
-            SpreadRadiusCollider.radius = ZombieStats.Instance.Radius;
-            LastRadius = ZombieStats.Instance.Radius;
-        }
-    }
+		SpawnedCount++;
 
-    private void EnterState(WalkState newState) {
+		LastRadius = ZombieStats.Instance.Radius;
+	}
 
-        if (CurrentState == newState) return;
+	// Update is called once per frame
+	void Update()
+	{
+		ExecuteCurrentState();
 
-        ExitCurrentState();
+		// check for stats update
+		if(ZombieStats.Instance.Radius != LastRadius)
+		{
+			SpreadRadiusCollider.radius = ZombieStats.Instance.Radius;
+			LastRadius = ZombieStats.Instance.Radius;
+		}
+	}
 
-        switch (newState) {
-            case WalkState.WalkNavMesh:
-                OnEnterStateWalkNavMesh();
-                break;
-            case WalkState.FollowMouse:
-                OnEnterStateFollowMouse();
-                break;
-            case WalkState.FollowCharacter:
-                OnEnterStateFollowCharacter();
-                break;
-        }
+	private void EnterState(WalkState newState)
+	{
 
-        CurrentState = newState;
-    }
+		if(CurrentState == newState) return;
 
-    private void ExitCurrentState() {
-        switch (CurrentState) {
-            case WalkState.WalkNavMesh:
-                OnExitStateWalkNavMesh();
-                break;
-            case WalkState.FollowMouse:
-                OnExitStateFollowMouse();
-                break;
-            case WalkState.FollowCharacter:
-                OnExitStateFollowCharacter();
-                break;
-        }
-        CurrentState = WalkState.None;
-    }
+		ExitCurrentState();
 
-    private void ExecuteCurrentState() {
-        switch (CurrentState) {
-            case WalkState.WalkNavMesh:
-                OnExecuteStateNavMesh();
-                break;
-            case WalkState.FollowMouse:
-                OnExecuteStateFollowMouse();
-                break;
-            case WalkState.FollowCharacter:
-                OnExecuteStateFollowCharacter();
-                break;
-        }
-    }
+		switch(newState)
+		{
+			case WalkState.WalkNavMesh:
+				OnEnterStateWalkNavMesh();
+				break;
+			case WalkState.FollowMouse:
+				OnEnterStateFollowMouse();
+				break;
+			case WalkState.FollowCharacter:
+				OnEnterStateFollowCharacter();
+				break;
+		}
 
-#region Enter State Methods
+		CurrentState = newState;
+	}
 
-    private void OnEnterStateWalkNavMesh() {
-        NavFound = false;
-        FindNavPath();
-    }
+	private void ExitCurrentState()
+	{
+		switch(CurrentState)
+		{
+			case WalkState.WalkNavMesh:
+				OnExitStateWalkNavMesh();
+				break;
+			case WalkState.FollowMouse:
+				OnExitStateFollowMouse();
+				break;
+			case WalkState.FollowCharacter:
+				OnExitStateFollowCharacter();
+				break;
+		}
+		CurrentState = WalkState.None;
+	}
 
-    private void OnEnterStateFollowMouse() {
-        CurrentState = WalkState.FollowMouse;
-        IsRunning = true;
-    }
+	private void ExecuteCurrentState()
+	{
+		switch(CurrentState)
+		{
+			case WalkState.WalkNavMesh:
+				OnExecuteStateNavMesh();
+				break;
+			case WalkState.FollowMouse:
+				OnExecuteStateFollowMouse();
+				break;
+			case WalkState.FollowCharacter:
+				OnExecuteStateFollowCharacter();
+				break;
+		}
+	}
 
-    private void OnEnterStateFollowCharacter() {
+	#region Enter State Methods
 
-    }
+	private void OnEnterStateWalkNavMesh()
+	{
+		NavFound = false;
+		FindNavPath();
+	}
 
-#endregion
+	private void OnEnterStateFollowMouse()
+	{
+		CurrentState = WalkState.FollowMouse;
+		IsRunning = true;
+	}
 
-#region Exit State Methods
+	private void OnEnterStateFollowCharacter()
+	{
 
-    private void OnExitStateWalkNavMesh() {
-        NavMeshPath.ClearCorners();
-    }
+	}
 
-    private void OnExitStateFollowMouse() {
-        IsRunning = false;
-    }
+	#endregion
 
-    private void OnExitStateFollowCharacter() {
+	#region Exit State Methods
 
-    }
+	private void OnExitStateWalkNavMesh()
+	{
+		NavMeshPath.ClearCorners();
+	}
 
-#endregion
+	private void OnExitStateFollowMouse()
+	{
+		IsRunning = false;
+	}
 
-#region Execute State Methods
+	private void OnExitStateFollowCharacter()
+	{
 
-    private void OnExecuteStateNavMesh() {
-        if (FollowTarget) {
-            FollowingTarget(TargetPosition, OnReachedNavCorner);
-        }
+	}
 
-        elapsed += Time.deltaTime;
-        float delay = 0.1f;
-        if (elapsed > delay && NavFound == false) {
-            elapsed -= delay;
-            FollowTarget = true;
-            NavFound = true;
-            FindNavPath();
-        }
-    }
+	#endregion
 
-    private void OnExecuteStateFollowMouse() {
-        TargetPosition = CursorController.instance.MousePosWorld;
-        FollowingTarget(TargetPosition, delegate {
-        });
-    }
+	#region Execute State Methods
 
-    private void OnExecuteStateFollowCharacter() {
-    }
+	private void OnExecuteStateNavMesh()
+	{
+		if(FollowTarget)
+		{
+			FollowingTarget(TargetPosition, OnReachedNavCorner);
+		}
 
-#endregion
+		elapsed += Time.deltaTime;
+		float delay = 0.1f;
+		if(elapsed > delay && NavFound == false)
+		{
+			elapsed -= delay;
+			FollowTarget = true;
+			NavFound = true;
+			FindNavPath();
+		}
+	}
 
-    void OnTriggerEnter(Collider other) {
-        if (IsInfected) {
-            if (other.gameObject.tag != "Character") return;
-            VirusCharacterController enemy = other.gameObject.GetComponent<VirusCharacterController>();
-            if (enemy.IsInfected) return;
-            enemy.EnterState(CurrentState);
-            enemy.OnInfected();
+	private void OnExecuteStateFollowMouse()
+	{
+		TargetPosition = CursorController.instance.MousePosWorld;
+		FollowingTarget(TargetPosition, delegate
+		{
+		});
+	}
 
-//            //TODO: Call this 2 lines when you should attack the enemy
-//            string attackName = Random.Range(0f, 1f) < 0.5f ? "Attack1" : "Attack2";
-//            characterAnimator.SetTrigger(attackName);
+	private void OnExecuteStateFollowCharacter()
+	{
+	}
 
-        }
-    }
+	#endregion
 
-    public void OnInfected() {
-        IsInfected = true;
-        characterAnimator.SetTrigger("ZombieWalk");
-        skinnedMeshRenderer.material = zombieMaterial;
+	void OnTriggerEnter(Collider other)
+	{
+		if(IsInfected)
+		{
+			if(other.gameObject.tag != "Character") return;
+			VirusCharacterController enemy = other.gameObject.GetComponent<VirusCharacterController>();
+			if(enemy.IsInfected) return;
+			enemy.EnterState(CurrentState);
+			enemy.OnInfected();
+
+			//            //TODO: Call this 2 lines when you should attack the enemy
+			//            string attackName = Random.Range(0f, 1f) < 0.5f ? "Attack1" : "Attack2";
+			//            characterAnimator.SetTrigger(attackName);
+
+		}
+	}
+
+	public void OnInfected()
+	{
+		IsInfected = true;
+		characterAnimator.SetTrigger("ZombieWalk");
+		skinnedMeshRenderer.material = zombieMaterial;
 		GameManager.Instance.AddScore(50);
 		GameManager.Instance.AddSkillPoints(1);
-        GameManager.Instance.OnInfected();
-    }
+		GameManager.Instance.OnInfected();
+		infectedPs.Play();
+		GameManager.Instance.audioSource.PlayOneShot(attackSfx);
 
-    private void FollowingTarget(Vector3 targetPosition, Action onTargetReached) {
+	}
 
-        Vector3 startDir = transform.forward;
-        Vector3 targetDir = Vector3.zero;
-        Vector3 avoidDir = Vector3.zero;
-        Vector3 wantedDir;// target dir + avoid dir
+	private void FollowingTarget(Vector3 targetPosition, Action onTargetReached)
+	{
 
-        targetDir = targetPosition - transform.position;
-        targetDir.y = 0;
-        targetDir.Normalize();
-        Debug.DrawRay(transform.position, targetDir * 3, Color.blue);
+		Vector3 startDir = transform.forward;
+		Vector3 targetDir = Vector3.zero;
+		Vector3 avoidDir = Vector3.zero;
+		Vector3 wantedDir;// target dir + avoid dir
 
-        IsInRange = false;
-        CharactersInRange.Clear();
+		targetDir = targetPosition - transform.position;
+		targetDir.y = 0;
+		targetDir.Normalize();
+		Debug.DrawRay(transform.position, targetDir * 3, Color.blue);
 
-        // avoid other characters
-        for (int i = 0; i < AllCharacters.Count; i++) {
-            VirusCharacterController character = AllCharacters[i];
+		IsInRange = false;
+		CharactersInRange.Clear();
 
-            // skip itself
-            if (character == this) continue;
+		// avoid other characters
+		for(int i = 0; i < AllCharacters.Count; i++)
+		{
+			VirusCharacterController character = AllCharacters[i];
 
-            Vector3 enemyDir = character.transform.position - transform.position;
-            enemyDir.y = 0;
-            float dist = enemyDir.magnitude;
+			// skip itself
+			if(character == this) continue;
 
-//            Debug.DrawLine(character.transform.position, transform.position, Color.white);
+			Vector3 enemyDir = character.transform.position - transform.position;
+			enemyDir.y = 0;
+			float dist = enemyDir.magnitude;
 
-            // if in range of enemy
-            if (dist < AvoidRadius) {
-                float avoidFactor01 = 1 - dist / AvoidRadius;
-                // adjust direction away from enemy
-                avoidDir += -enemyDir.normalized * avoidFactor01;
-                Debug.DrawRay(transform.position, -enemyDir.normalized * avoidFactor01 * 3, Color.red);
-                IsInRange = true;
-                CharactersInRange.Add(character);
-//                character.IsInfected = true;
-            }
-        }
+			//            Debug.DrawLine(character.transform.position, transform.position, Color.white);
 
-        float rotateStep = RotateSpeed * Time.deltaTime;
+			// if in range of enemy
+			if(dist < AvoidRadius)
+			{
+				float avoidFactor01 = 1 - dist / AvoidRadius;
+				// adjust direction away from enemy
+				avoidDir += -enemyDir.normalized * avoidFactor01;
+				Debug.DrawRay(transform.position, -enemyDir.normalized * avoidFactor01 * 3, Color.red);
+				IsInRange = true;
+				CharactersInRange.Add(character);
+				//                character.IsInfected = true;
+			}
+		}
 
-        wantedDir = targetDir + avoidDir;
-        wantedDir.Normalize();
-        Debug.DrawRay(transform.position, wantedDir, Color.yellow);
+		float rotateStep = RotateSpeed * Time.deltaTime;
 
-        Vector3 newDir = Vector3.RotateTowards(startDir, wantedDir, rotateStep, 0.0F);
-        Debug.DrawRay(transform.position, newDir, Color.green);
+		wantedDir = targetDir + avoidDir;
+		wantedDir.Normalize();
+		Debug.DrawRay(transform.position, wantedDir, Color.yellow);
 
-        transform.rotation = Quaternion.LookRotation(newDir);
+		Vector3 newDir = Vector3.RotateTowards(startDir, wantedDir, rotateStep, 0.0F);
+		Debug.DrawRay(transform.position, newDir, Color.green);
+
+		transform.rotation = Quaternion.LookRotation(newDir);
 
 
-        // walk forward
-        float speed = IsInfected ? ZombieStats.Instance.MovementSpeed * (IsRunning ? 2 : 1) : CitizenSpeed;
-        float walkStep = speed * Time.deltaTime;
+		// walk forward
+		float speed = IsInfected ? ZombieStats.Instance.MovementSpeed * (IsRunning ? 2 : 1) : CitizenSpeed;
+		float walkStep = speed * Time.deltaTime;
 
-        Vector3 newPos = transform.position + newDir * walkStep;
-        newPos.y = 0;
-        transform.position = newPos;
-//
-        // is target reached?
-        float distanceSquared = Vector3.SqrMagnitude(targetPosition - transform.position);
-        if (distanceSquared < 2f) {
-            onTargetReached();
-        }
-    }
+		Vector3 newPos = transform.position + newDir * walkStep;
+		newPos.y = 0;
+		transform.position = newPos;
+		//
+		// is target reached?
+		float distanceSquared = Vector3.SqrMagnitude(targetPosition - transform.position);
+		if(distanceSquared < 2f)
+		{
+			onTargetReached();
+		}
+	}
 
-    private void FindNavPath() {
-        if (NavMeshPath == null) return;
+	private void FindNavPath()
+	{
+		if(NavMeshPath == null) return;
 
-        Vector3 startPos = transform.position;
-        for (int i = 0; i < 10; i++) { // try finding path
-            bool pathFound = NavMesh.CalculatePath(startPos, GameManager.Instance.GetRandomArenaPosition(), NavMesh.AllAreas, NavMeshPath);
-            if (pathFound) break;
-            startPos += transform.forward;
-        }
+		Vector3 startPos = transform.position;
+		for(int i = 0; i < 10; i++)
+		{ // try finding path
+			bool pathFound = NavMesh.CalculatePath(startPos, GameManager.Instance.GetRandomArenaPosition(), NavMesh.AllAreas, NavMeshPath);
+			if(pathFound) break;
+			startPos += transform.forward;
+		}
 
-        if (NavMeshPath.corners.Length == 0) {
-            FollowTarget = false;
-            Debug.Log("no path found");
-            return;
-        }
+		if(NavMeshPath.corners.Length == 0)
+		{
+			FollowTarget = false;
+			Debug.Log("no path found");
+			return;
+		}
 
-        NavCornerIndex = 0;
-        TargetPosition = NavMeshPath.corners[NavCornerIndex];
-    }
+		NavCornerIndex = 0;
+		TargetPosition = NavMeshPath.corners[NavCornerIndex];
+	}
 
-    private void OnReachedNavCorner() {
-        NavCornerIndex++;
-        if (NavCornerIndex >= NavMeshPath.corners.Length) {
-            FindNavPath();
-        } else {
-            TargetPosition = NavMeshPath.corners[NavCornerIndex];
-        }
-    }
+	private void OnReachedNavCorner()
+	{
+		NavCornerIndex++;
+		if(NavCornerIndex >= NavMeshPath.corners.Length)
+		{
+			FindNavPath();
+		}
+		else
+		{
+			TargetPosition = NavMeshPath.corners[NavCornerIndex];
+		}
+	}
 
-    private void OnRandomTargetReached() {
-        TargetPosition = GameManager.Instance.GetRandomArenaPosition();
-    }
+	private void OnRandomTargetReached()
+	{
+		TargetPosition = GameManager.Instance.GetRandomArenaPosition();
+	}
 
-    public void OnMouseDown() {
-        if (IsInfected) {
-            EnterState(WalkState.FollowMouse);
-        }
-    }
+	public void OnMouseDown()
+	{
+		if(IsInfected)
+		{
+			EnterState(WalkState.FollowMouse);
+		}
+	}
 
-    public void OnMouseUp() {
-        if (IsInfected) {
-            EnterState(WalkState.WalkNavMesh);
-        }
-    }
+	public void OnMouseUp()
+	{
+		if(IsInfected)
+		{
+			EnterState(WalkState.WalkNavMesh);
+		}
+	}
 
-#region Gizmos
+	#region Gizmos
 
-    private void OnDrawGizmos() {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(TargetPosition, 0.1f);
+	private void OnDrawGizmos()
+	{
+		Gizmos.color = Color.red;
+		Gizmos.DrawWireSphere(TargetPosition, 0.1f);
 
-        if (NavMeshPath == null) return;
+		if(NavMeshPath == null) return;
 
-//        Gizmos.color = Color.magenta;
-//        for (int i = 0; i < NavMeshPath.corners.Length; i++) {
-//            Vector3 corner = NavMeshPath.corners[i];
-////            Gizmos.DrawWireSphere(corner, i == 0 ? 0.5f : 0.2f);
-//            if (i > 0) {
-//                Gizmos.DrawLine(NavMeshPath.corners[i - 1], corner);
-//            }
-//        }
+		//        Gizmos.color = Color.magenta;
+		//        for (int i = 0; i < NavMeshPath.corners.Length; i++) {
+		//            Vector3 corner = NavMeshPath.corners[i];
+		////            Gizmos.DrawWireSphere(corner, i == 0 ? 0.5f : 0.2f);
+		//            if (i > 0) {
+		//                Gizmos.DrawLine(NavMeshPath.corners[i - 1], corner);
+		//            }
+		//        }
 
-//        // avoid radius
-//        Gizmos.color = IsInRange ? Color.red : Color.gray;
-//        Gizmos.DrawWireSphere(transform.position, AvoidRadius);
+		//        // avoid radius
+		//        Gizmos.color = IsInRange ? Color.red : Color.gray;
+		//        Gizmos.DrawWireSphere(transform.position, AvoidRadius);
 
-        // infected indicator
-        if (IsInfected) {
-            switch (CurrentState) {
-                case WalkState.WalkNavMesh:
-                    Gizmos.color = Color.cyan;
-                    break;
-                case WalkState.FollowMouse:
-                    Gizmos.color = Color.yellow;
-                    break;
-                case WalkState.FollowCharacter:
-                    Gizmos.color = Color.red;
-                    break;
-            }
-            Gizmos.DrawWireCube(transform.position, new Vector3(1.5f, 3, 1.5f));
-        }
-    }
+		// infected indicator
+		if(IsInfected)
+		{
+			switch(CurrentState)
+			{
+				case WalkState.WalkNavMesh:
+					Gizmos.color = Color.cyan;
+					break;
+				case WalkState.FollowMouse:
+					Gizmos.color = Color.yellow;
+					break;
+				case WalkState.FollowCharacter:
+					Gizmos.color = Color.red;
+					break;
+			}
+			Gizmos.DrawWireCube(transform.position, new Vector3(1.5f, 3, 1.5f));
+		}
+	}
 
-#endregion
+	#endregion
 }

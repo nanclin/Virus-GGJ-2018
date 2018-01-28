@@ -9,6 +9,7 @@ public class UpgradeButton : MonoBehaviour
 	public GameObject[] points;
 	public UpgradeType upgradeType;
 
+	public AudioClip buttonSfx;
 	private void OnEnable()
 	{
 		SetPoints(ZombieStats.Instance.GetUpgradeLevel(upgradeType));
@@ -22,6 +23,7 @@ public class UpgradeButton : MonoBehaviour
 			return;
 		}
 
+		GameManager.Instance.audioSource.PlayOneShot(buttonSfx);
 		GameManager.Instance.AddSkillPoints(-ZombieStats.Instance.GetUpgradePrice(upgradeType));
 		ZombieStats.Instance.UpgradeSkill(upgradeType);
 		int level = ZombieStats.Instance.GetUpgradeLevel(upgradeType);

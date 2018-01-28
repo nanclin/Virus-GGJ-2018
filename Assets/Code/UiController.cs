@@ -20,6 +20,9 @@ public class UiController : MonoBehaviour
 	public GameObject mainUiGo;
 	public GameObject postmatchGo;
 
+	public AudioClip gameover;
+
+
 	private void Awake()
 	{
 		instance = this;
@@ -45,5 +48,6 @@ public class UiController : MonoBehaviour
 	{
 		mainUiGo.SetActive(false);
 		postmatchGo.SetActive(true);
+		GameManager.Instance.audioSource.PlayOneShot(gameover);
 	}
 }
