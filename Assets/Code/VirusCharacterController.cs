@@ -246,12 +246,10 @@ public class VirusCharacterController : MonoBehaviour
 		GameManager.Instance.OnInfected();
 		infectedPs.Play();
 		GameManager.Instance.audioSource.PlayOneShot(attackSfx);
-
 	}
 
 	private void FollowingTarget(Vector3 targetPosition, Action onTargetReached)
 	{
-
 		Vector3 startDir = transform.forward;
 		Vector3 targetDir = Vector3.zero;
 		Vector3 avoidDir = Vector3.zero;
