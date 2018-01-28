@@ -287,7 +287,12 @@ public class VirusCharacterController : MonoBehaviour {
 
         // walk forward
         float speed = IsInfected ? ZombieStats.Instance.MovementSpeed * (IsRunning ? 2 : 1) : CitizenSpeed;
-        float walkStep = speed * Time.deltaTime;
+		if(IsInfected)
+		{
+			characterAnimator.SetFloat("ZombieRunSpeed", speed);
+		}
+		
+		float walkStep = speed * Time.deltaTime;
 
         Vector3 newPos = transform.position + newDir * walkStep;
         newPos.y = 0;
