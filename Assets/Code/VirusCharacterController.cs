@@ -12,6 +12,7 @@ public class VirusCharacterController : MonoBehaviour {
         WalkNavMesh,
         FollowMouse,
         FollowCharacter,
+        Dying,
     }
 
     public static List<VirusCharacterController> AllCharacters = new List<VirusCharacterController>();
@@ -204,7 +205,7 @@ public class VirusCharacterController : MonoBehaviour {
 #endregion
 
     void OnTriggerEnter(Collider other) {
-        if (IsInfected) {
+        if (IsInfected && CurrentState != WalkState.Dying) {
             if (other.gameObject.tag != "Character") return;
             VirusCharacterController enemy = other.gameObject.GetComponent<VirusCharacterController>();
             if (enemy.IsInfected) return;
@@ -343,15 +344,22 @@ public class VirusCharacterController : MonoBehaviour {
     }
 
     public void Die() {
-        AllCharacters.Remove(this);
+        EnterState(WalkState.Dying);
+        characterAnimator.SetTrigger("Death");
+        Invoke("OnDied", 5);
+    }
+
+    private void OnDied() {
         bool isGameOver = true;
         foreach (var character in AllCharacters) {
+            if (character == this) continue;
             if (character.IsInfected) {
                 isGameOver = false;
                 break;
             }
         }
         if (isGameOver) GameManager.Instance.EndGame();
+        AllCharacters.Remove(this);
         Destroy(gameObject);
     }
 
