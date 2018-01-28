@@ -87,6 +87,7 @@ GameObject:
   - component: {fileID: 4539600582822398}
   - component: {fileID: 33097574697388512}
   - component: {fileID: 23660020741675578}
+  - component: {fileID: 65919367588890322}
   m_Layer: 0
   m_Name: SculpurePiedestal
   m_TagString: Untagged
@@ -698,7 +699,19 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 14
   m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300012, guid: 4f14fdbb927626a419d7573f5ed69726, type: 3}
+  m_Mesh: {fileID: 4300022, guid: 4f14fdbb927626a419d7573f5ed69726, type: 3}
+--- !u!65 &65919367588890322
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1496732047810114}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.4765391, y: 1.3387005, z: 2.4765406}
+  m_Center: {x: -0.14059633, y: 0.5278177, z: 0.33780518}
