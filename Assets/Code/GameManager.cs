@@ -81,6 +81,7 @@ public class GameManager : MonoBehaviour {
         //ZombieStats.Instance.Reset();
 		
         InfectedCount = 0;
+        VirusCharacterController.ZombieCount = 0;
         UiController.Instance.OpenMainUi();
         RemoveAllCharacters();
         SpawnCharacters(SpawnCount);
