@@ -17,6 +17,7 @@ public class VirusCharacterController : MonoBehaviour {
 
     public static List<VirusCharacterController> AllCharacters = new List<VirusCharacterController>();
     public static int SpawnedCount = 0;
+    public static int ZombieCount = 0;
 
     public Transform target;
     public float RotateSpeed;
@@ -228,7 +229,8 @@ public class VirusCharacterController : MonoBehaviour {
         GameManager.Instance.OnInfected();
         infectedPs.Play();
         GameManager.Instance.audioSource.PlayOneShot(attackSfx);
-
+        ZombieCount++;
+        Debug.Log("zombie count: " + ZombieCount);
     }
 
     private void FollowingTarget(Vector3 targetPosition, Action onTargetReached) {
@@ -350,17 +352,14 @@ public class VirusCharacterController : MonoBehaviour {
     }
 
     private void OnDied() {
-        bool isGameOver = true;
-        foreach (var character in AllCharacters) {
-            if (character == this) continue;
-            if (character.IsInfected) {
-                isGameOver = false;
-                break;
-            }
+        ZombieCount--;
+        Debug.Log("zombie count: " + ZombieCount);
+        if (ZombieCount == 0) {
+            GameManager.Instance.EndGame();
+        } else {
+            AllCharacters.Remove(this);
+            Destroy(gameObject);
         }
-        if (isGameOver) GameManager.Instance.EndGame();
-        AllCharacters.Remove(this);
-        Destroy(gameObject);
     }
 
 #region Gizmos

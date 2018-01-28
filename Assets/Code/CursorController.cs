@@ -118,7 +118,7 @@ public class CursorController : MonoBehaviour {
         CursorFuel = CursorFuelMax;
         CursorFuel01 = 1;
         CursorMaterial.SetColor("_Color", CursorColorValid);
-        Debug.Log("OnFilledUp");
+//        Debug.Log("OnFilledUp");
     }
 
     private void OnEmptiedOut() {
@@ -126,7 +126,7 @@ public class CursorController : MonoBehaviour {
         CursorFuel01 = 0;
         CursorMaterial.SetColor("_Color", CursorColorInvalid);
         GameManager.Instance.EndFollow();
-        Debug.Log("OnEmptiedOut");
+//        Debug.Log("OnEmptiedOut");
     }
 
     private void AnimateCursor() {
