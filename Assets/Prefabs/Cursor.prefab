@@ -303,8 +303,8 @@ MonoBehaviour:
   CursorColorInvalid: {r: 1, g: 0.27205884, b: 0.27205884, a: 1}
   CursorMaterial: {fileID: 2100000, guid: fa4578ef386344683b0b16d2d809c04f, type: 2}
   CursorCooldownTime: 0
-  DrainSpeed: 0.3
-  FillSpeed: 0.2
+  DrainSpeed: 0.2
+  FillSpeed: 0.5
   CursorFuel: 1
   CursorFuelMax: 1.5
   ColorBlendCurve:
