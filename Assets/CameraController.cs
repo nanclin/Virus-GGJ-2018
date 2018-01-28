@@ -5,6 +5,10 @@ using UnityEngine;
 public class CameraController : MonoBehaviour {
 
     public float MoveSpeed = 5;
+    public float MaxSpeed = 10;
+
+    private Vector3 TargetPos;
+    private bool IsMouseDown;
 
     // Use this for initialization
     void Start() {
@@ -13,9 +17,28 @@ public class CameraController : MonoBehaviour {
 	
     // Update is called once per frame
     void Update() {
-        Vector3 target = CursorController.instance.transform.position;
-        float dist = (target - transform.position).magnitude;
+        if (Input.GetMouseButtonDown(0)) {
+            IsMouseDown = true;
+        }
+
+        if (Input.GetMouseButtonUp(0)) {
+            IsMouseDown = false;
+        }
+
+        if (IsMouseDown) {
+            TargetPos = CursorController.instance.transform.position;
+        }
+
+        float dist = (TargetPos - transform.position).magnitude;
+
         float speed = dist * MoveSpeed;
-        transform.position = Vector3.MoveTowards(transform.position, target, Time.deltaTime * speed);
+        speed = Mathf.Clamp(speed, 0, MaxSpeed);
+        Vector3 newPos = Vector3.MoveTowards(transform.position, TargetPos, Time.deltaTime * speed);
+
+        float size = 25;
+        newPos.x = Mathf.Clamp(newPos.x, -size, size);
+        newPos.z = Mathf.Clamp(newPos.z, -size, size);
+
+        transform.position = newPos;
     }
 }
